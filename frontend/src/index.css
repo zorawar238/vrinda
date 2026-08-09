@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@theme {
+  --color-hot-pink: #ff007f;
+  --color-electric-lime: #ccff00;
+  --color-cobalt: #0047ab;
+  --color-near-black: #111111;
+  --color-off-white: #faf9f6;
+
+  --color-primary: var(--color-hot-pink);
+  --color-secondary: var(--color-electric-lime);
+  --color-accent: var(--color-cobalt);
+  --color-background: var(--color-off-white);
+  --color-foreground: var(--color-near-black);
+  
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Oswald', sans-serif;
+
+  /* Brutalist utilities */
+  --shadow-brutal: 4px 4px 0px 0px var(--color-near-black);
+  --shadow-brutal-lg: 8px 8px 0px 0px var(--color-near-black);
+
+  --animate-marquee: marquee 20s linear infinite;
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold tracking-tight;
+  }
+}
