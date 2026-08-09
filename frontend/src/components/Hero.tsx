@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export function Hero() {
   return (
     <section className="relative border-b-4 border-foreground overflow-hidden bg-primary text-foreground">
@@ -17,9 +19,9 @@ export function Hero() {
           <p className="text-xl md:text-2xl font-medium max-w-md">
             Bold styles for the new era. Stand out, be loud, and embrace the chaos.
           </p>
-          <button className="bg-secondary text-foreground font-bold text-xl px-8 py-4 border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(17,17,17,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(17,17,17,1)] transition-all uppercase tracking-wide">
+          <Link to="/shop" className="inline-block bg-secondary text-foreground font-bold text-xl px-8 py-4 border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(17,17,17,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(17,17,17,1)] transition-all uppercase tracking-wide">
             Shop Collection
-          </button>
+          </Link>
         </div>
 
         <div className="relative z-10 px-4 md:px-0">

@@ -1,9 +1,11 @@
+import { Link } from 'react-router-dom';
+
 export function Footer() {
   return (
     <footer className="bg-foreground text-background border-t-8 border-primary">
       <div className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 lg:grid-cols-4 gap-12">
         <div className="space-y-6">
-          <h2 className="text-6xl font-display font-bold uppercase tracking-widest text-primary">Vrinda</h2>
+          <Link to="/" className="text-6xl font-display font-bold uppercase tracking-widest text-primary hover:opacity-80 transition-opacity block">Vrinda</Link>
           <p className="font-medium max-w-sm">
             Unapologetic fashion for the bold. Designed in India for the new era.
           </p>
@@ -12,10 +14,10 @@ export function Footer() {
         <div>
           <h3 className="font-display font-bold text-2xl uppercase mb-6 text-secondary">Shop</h3>
           <ul className="space-y-4 font-medium uppercase">
-            <li><a href="#" className="hover:text-primary transition-colors block">New Arrivals</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors block">Best Sellers</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors block">Collections</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors block">Sale</a></li>
+            <li><Link to="/shop" className="hover:text-primary transition-colors block">New Arrivals</Link></li>
+            <li><Link to="/shop" className="hover:text-primary transition-colors block">Best Sellers</Link></li>
+            <li><Link to="/shop" className="hover:text-primary transition-colors block">Collections</Link></li>
+            <li><Link to="/shop" className="hover:text-primary transition-colors block">Sale</Link></li>
           </ul>
         </div>
 

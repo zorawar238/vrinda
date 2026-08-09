@@ -7,7 +7,9 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "data:import": "tsx src/seeder.ts",
+    "data:destroy": "tsx src/seeder.ts -d"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +22,7 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.9.1",
+    "multer": "^2.2.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -27,6 +30,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.2.0",
     "@types/node": "^26.2.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.23.11",
