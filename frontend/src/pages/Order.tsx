@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
+// ... (interfaces remain the same)
 interface OrderItem {
   name: string;
   qty: number;
@@ -20,11 +21,18 @@ interface OrderDetails {
   paidAt?: string;
   isDelivered: boolean;
   deliveredAt?: string;
+  status: string;
   orderItems: OrderItem[];
   itemsPrice: number;
   shippingPrice: number;
   taxPrice: number;
   totalPrice: number;
+}
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
 }
 
 const Order = () => {
@@ -34,6 +42,7 @@ const Order = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [deliverLoading, setDeliverLoading] = useState(false);
+  const [payLoading, setPayLoading] = useState(false);
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -60,24 +69,100 @@ const Order = () => {
     fetchOrder();
   }, [id, userInfo]);
 
-  const deliverHandler = async () => {
+  const statusHandler = async (newStatus: string) => {
     setDeliverLoading(true);
     try {
-      const res = await fetch(`/api/orders/${id}/deliver`, {
+      const res = await fetch(`/api/orders/${id}/status`, {
         method: 'PUT',
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${userInfo?.token}`,
         },
+        body: JSON.stringify({ status: newStatus }),
       });
       const data = await res.json();
       
-      if (!res.ok) throw new Error(data.message || 'Failed to update delivery status');
+      if (!res.ok) throw new Error(data.message || 'Failed to update order status');
       
       setOrder(data);
     } catch (err: any) {
       setError(err.message);
     } finally {
       setDeliverLoading(false);
+    }
+  };
+
+  const payHandler = async () => {
+    setPayLoading(true);
+    try {
+      // 1. Fetch Razorpay Key
+      const keyRes = await fetch('/api/payment/razorpay-key');
+      const { keyId } = await keyRes.json();
+
+      // 2. Create Razorpay Order
+      const orderRes = await fetch('/api/payment/razorpay-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+        body: JSON.stringify({ orderId: id }),
+      });
+      const orderData = await orderRes.json();
+
+      if (!orderRes.ok) throw new Error(orderData.message || 'Failed to create Razorpay order');
+
+      // 3. Open Razorpay Checkout Widget
+      const options = {
+        key: keyId,
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: 'Vrinda Store',
+        description: `Payment for Order ${id}`,
+        order_id: orderData.id,
+        handler: async function (response: any) {
+          try {
+            // 4. Verify payment on backend
+            const verifyRes = await fetch(`/api/orders/${id}/pay`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo?.token}`,
+              },
+              body: JSON.stringify({
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature,
+              }),
+            });
+            const verifyData = await verifyRes.json();
+            
+            if (!verifyRes.ok) throw new Error(verifyData.message || 'Payment verification failed');
+            
+            setOrder(verifyData);
+          } catch (err: any) {
+            alert(err.message);
+          }
+        },
+        prefill: {
+          name: order?.user.name,
+          email: order?.user.email,
+        },
+        theme: {
+          color: '#111111',
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', function (response: any) {
+        alert(`Payment Failed: ${response.error.description}`);
+      });
+      rzp.open();
+
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setPayLoading(false);
     }
   };
 
@@ -96,7 +181,23 @@ const Order = () => {
         <div className="lg:col-span-2 space-y-12">
           
           <section>
-            <h2 className="text-3xl font-black uppercase mb-4 tracking-tight border-b-4 border-foreground pb-2">Shipping</h2>
+            <h2 className="text-3xl font-black uppercase mb-4 tracking-tight border-b-4 border-foreground pb-2">Order Status</h2>
+            
+            <div className="mb-8">
+              <div className="flex justify-between mb-2">
+                <span className={`font-bold uppercase ${order.status === 'Processing' || order.status === 'Shipped' || order.status === 'Delivered' ? 'text-primary' : 'text-gray-400'}`}>Processing</span>
+                <span className={`font-bold uppercase ${order.status === 'Shipped' || order.status === 'Delivered' ? 'text-primary' : 'text-gray-400'}`}>Shipped</span>
+                <span className={`font-bold uppercase ${order.status === 'Delivered' ? 'text-primary' : 'text-gray-400'}`}>Delivered</span>
+              </div>
+              <div className="w-full h-4 bg-gray-200 border-2 border-foreground flex rounded-full overflow-hidden">
+                <div className={`h-full bg-primary transition-all duration-500 ${
+                  order.status === 'Delivered' ? 'w-full' : 
+                  order.status === 'Shipped' ? 'w-1/2 border-r-2 border-foreground' : 
+                  'w-1/4 border-r-2 border-foreground'
+                }`}></div>
+              </div>
+            </div>
+
             <p className="text-lg font-medium mb-4">
               <strong>Name:</strong> {order.user.name} <br />
               <strong>Email:</strong> <a href={`mailto:${order.user.email}`} className="text-primary hover:underline">{order.user.email}</a> <br />
@@ -107,8 +208,8 @@ const Order = () => {
                 Delivered on {new Date(order.deliveredAt!).toLocaleDateString()}
               </div>
             ) : (
-              <div className="bg-red-100 text-red-800 border-4 border-red-800 p-4 font-bold uppercase">
-                Not Delivered
+              <div className="bg-secondary text-foreground border-4 border-foreground p-4 font-bold uppercase">
+                Current Status: {order.status}
               </div>
             )}
           </section>
@@ -175,23 +276,43 @@ const Order = () => {
             </div>
             
             {!order.isPaid && (
-              <div className="mt-8 p-4 border-4 border-dashed border-gray-400 text-center font-bold text-gray-500 uppercase">
-                Payment Gateway Integration Pending
-              </div>
+              <button
+                onClick={payHandler}
+                disabled={payLoading}
+                className={`w-full mt-8 py-4 px-8 border-4 border-foreground font-black uppercase tracking-widest transition-all ${
+                  payLoading
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-primary text-background hover:bg-foreground hover:text-background'
+                }`}
+              >
+                {payLoading ? 'Loading...' : `Pay With Razorpay`}
+              </button>
             )}
 
             {userInfo?.isAdmin && order.isPaid && !order.isDelivered && (
-              <button
-                onClick={deliverHandler}
-                disabled={deliverLoading}
-                className={`w-full mt-8 py-4 px-8 border-4 border-foreground font-black uppercase tracking-widest transition-all ${
-                  deliverLoading
-                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    : 'bg-foreground text-background hover:bg-primary hover:text-background'
-                }`}
-              >
-                {deliverLoading ? 'Processing...' : 'Mark As Delivered'}
-              </button>
+              <div className="mt-8 border-4 border-foreground p-4 bg-background">
+                <h3 className="font-black uppercase mb-4">Update Status</h3>
+                <div className="flex flex-col gap-2">
+                  {order.status === 'Processing' && (
+                    <button
+                      onClick={() => statusHandler('Shipped')}
+                      disabled={deliverLoading}
+                      className="w-full py-3 px-4 border-2 border-foreground font-black uppercase bg-secondary hover:bg-primary hover:text-background transition-all"
+                    >
+                      {deliverLoading ? 'Wait...' : 'Mark as Shipped'}
+                    </button>
+                  )}
+                  {order.status === 'Shipped' && (
+                    <button
+                      onClick={() => statusHandler('Delivered')}
+                      disabled={deliverLoading}
+                      className="w-full py-3 px-4 border-2 border-foreground font-black uppercase bg-foreground text-background hover:bg-primary transition-all"
+                    >
+                      {deliverLoading ? 'Wait...' : 'Mark as Delivered'}
+                    </button>
+                  )}
+                </div>
+              </div>
             )}
             
             {userInfo?.isAdmin && !order.isPaid && !order.isDelivered && (

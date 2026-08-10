@@ -4,7 +4,9 @@ import {
   getOrderById,
   getMyOrders,
   getOrders,
-  updateOrderToDelivered,
+  updateOrderStatus,
+  payOrder,
+  getAdminAnalytics,
 } from '../controllers/orderController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -17,10 +19,16 @@ router.route('/')
 router.route('/mine')
   .get(protect, getMyOrders);
 
+router.route('/analytics')
+  .get(protect, admin, getAdminAnalytics);
+
 router.route('/:id')
   .get(protect, getOrderById);
 
-router.route('/:id/deliver')
-  .put(protect, admin, updateOrderToDelivered);
+router.route('/:id/status')
+  .put(protect, admin, updateOrderStatus);
+
+router.route('/:id/pay')
+  .put(protect, payOrder);
 
 export default router;

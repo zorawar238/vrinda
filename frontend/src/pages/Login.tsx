@@ -67,14 +67,19 @@ export function Login() {
 
           <div>
             <label className="block font-bold uppercase mb-2">Password</label>
-            <input 
-              type="password" 
-              className="w-full border-4 border-foreground p-4 bg-secondary font-medium focus:outline-none focus:bg-background transition-colors"
-              placeholder="ENTER PASSWORD"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="flex flex-col gap-2">
+              <input 
+                type="password" 
+                className="w-full border-4 border-foreground p-4 bg-secondary font-medium focus:outline-none focus:bg-background transition-colors"
+                placeholder="ENTER PASSWORD"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <Link to="/forgot-password" className="text-right font-bold text-sm uppercase hover:text-primary transition-colors">
+                Forgot Password?
+              </Link>
+            </div>
           </div>
 
           <button 

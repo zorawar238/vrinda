@@ -1,5 +1,12 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
+export interface IReview extends Document {
+  name: string;
+  rating: number;
+  comment: string;
+  user: mongoose.Types.ObjectId;
+}
+
 export interface IProduct extends Document {
   name: string;
   description: string;
@@ -9,7 +16,26 @@ export interface IProduct extends Document {
   stock: number;
   image: string;
   isTrending?: boolean;
+  reviews: IReview[];
+  rating: number;
+  numReviews: number;
 }
+
+const reviewSchema = new Schema<IReview>(
+  {
+    name: { type: String, required: true },
+    rating: { type: Number, required: true },
+    comment: { type: String, required: true },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 const productSchema = new Schema<IProduct>(
   {
@@ -49,7 +75,18 @@ const productSchema = new Schema<IProduct>(
     isTrending: {
       type: Boolean,
       default: false,
-    }
+    },
+    reviews: [reviewSchema],
+    rating: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    numReviews: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
   },
   {
     timestamps: true, // Automatically creates createdAt and updatedAt fields

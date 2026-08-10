@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { WishlistButton } from './WishlistButton';
+import { Rating } from './Rating';
 
 interface Product {
   _id: string;
@@ -7,6 +9,8 @@ interface Product {
   price: number;
   image: string;
   isTrending?: boolean;
+  rating?: number;
+  numReviews?: number;
 }
 
 export function ProductGrid() {
@@ -59,12 +63,19 @@ export function ProductGrid() {
                   <Link to={`/product/${p._id}`} className="hover:text-primary transition-colors">
                     <h3 className="font-bold text-lg uppercase leading-tight mb-2">{p.name}</h3>
                   </Link>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Rating value={p.rating || 0} />
+                    <span className="text-sm font-bold opacity-70">({p.numReviews || 0})</span>
+                  </div>
                   <p className="font-display font-bold text-2xl">₹{p.price}</p>
                 </div>
-                <Link to={`/product/${p._id}`} className="mt-6 w-full text-center block bg-primary text-background font-bold py-3 border-2 border-foreground hover:bg-foreground hover:text-background transition-colors uppercase relative overflow-hidden group/btn">
-                  <span className="relative z-10">View Item</span>
-                  <div className="absolute inset-0 bg-foreground scale-x-0 group-hover/btn:scale-x-100 origin-left transition-transform duration-300"></div>
-                </Link>
+                <div className="mt-6 flex gap-2">
+                  <Link to={`/product/${p._id}`} className="flex-grow text-center block bg-primary text-background font-bold py-3 border-2 border-foreground hover:bg-foreground hover:text-background transition-colors uppercase relative overflow-hidden group/btn">
+                    <span className="relative z-10">View Item</span>
+                    <div className="absolute inset-0 bg-foreground scale-x-0 group-hover/btn:scale-x-100 origin-left transition-transform duration-300"></div>
+                  </Link>
+                  <WishlistButton product={p} />
+                </div>
               </div>
             </div>
           ))

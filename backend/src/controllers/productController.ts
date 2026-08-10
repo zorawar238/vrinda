@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { Product } from '../models/Product';
+import { Product } from '../models/Product.js';
 import type { AuthRequest } from '../middleware/authMiddleware.js';
 
 // @desc    Fetch all products
@@ -7,10 +7,44 @@ import type { AuthRequest } from '../middleware/authMiddleware.js';
 // @access  Public
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const products = await Product.find({});
+    const keyword = req.query.search
+      ? {
+          name: {
+            $regex: req.query.search,
+            $options: 'i',
+          },
+        }
+      : {};
+
+    const category = req.query.category ? { category: req.query.category } : {};
+
+    let sortOption = {};
+    if (req.query.sort === 'priceAsc') {
+      sortOption = { price: 1 };
+    } else if (req.query.sort === 'priceDesc') {
+      sortOption = { price: -1 };
+    } else {
+      // Default: sort by newest
+      sortOption = { createdAt: -1 };
+    }
+
+    const products = await Product.find({ ...keyword, ...category }).sort(sortOption as any);
     res.json(products);
   } catch (error: any) {
     console.error(`Error fetching products: ${error.message}`);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+// @desc    Get all product categories
+// @route   GET /api/products/categories
+// @access  Public
+export const getCategories = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const categories = await Product.find().distinct('category');
+    res.json(categories);
+  } catch (error: any) {
+    console.error(`Error fetching categories: ${error.message}`);
     res.status(500).json({ message: 'Server Error' });
   }
 };
@@ -31,6 +65,29 @@ export const getProductById = async (req: Request, res: Response): Promise<void>
     console.error(`Error fetching product: ${error.message}`);
     // If the ID isn't a valid MongoDB ObjectId, it will throw an error here
     res.status(404).json({ message: 'Product not found or invalid ID' });
+  }
+};
+
+// @desc    Get related products
+// @route   GET /api/products/:id/related
+// @access  Public
+export const getRelatedProducts = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const product = await Product.findById(req.params.id);
+
+    if (product) {
+      const relatedProducts = await Product.find({
+        _id: { $ne: product._id },
+        category: product.category,
+      }).limit(4);
+
+      res.json(relatedProducts);
+    } else {
+      res.status(404).json({ message: 'Product not found' });
+    }
+  } catch (error: any) {
+    console.error(`Error fetching related products: ${error.message}`);
+    res.status(500).json({ message: 'Server Error' });
   }
 };
 
@@ -112,6 +169,50 @@ export const deleteProduct = async (req: Request, res: Response): Promise<void> 
     }
   } catch (error: any) {
     console.error(`Error deleting product: ${error.message}`);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+// @desc    Create new review
+// @route   POST /api/products/:id/reviews
+// @access  Private
+export const createProductReview = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { rating, comment } = req.body;
+
+    const product = await Product.findById(req.params.id);
+
+    if (product) {
+      const alreadyReviewed = product.reviews.find(
+        (r) => r.user.toString() === req.user?._id.toString()
+      );
+
+      if (alreadyReviewed) {
+        res.status(400).json({ message: 'Product already reviewed' });
+        return;
+      }
+
+      const review = {
+        name: req.user?.name || 'Unknown',
+        rating: Number(rating),
+        comment,
+        user: req.user?._id,
+      };
+
+      // @ts-ignore - mongoose typing issue with pushed subdocuments
+      product.reviews.push(review);
+
+      product.numReviews = product.reviews.length;
+      product.rating =
+        product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.reviews.length;
+
+      await product.save();
+      res.status(201).json({ message: 'Review added' });
+    } else {
+      res.status(404).json({ message: 'Product not found' });
+    }
+  } catch (error: any) {
+    console.error(`Error adding review: ${error.message}`);
     res.status(500).json({ message: 'Server Error' });
   }
 };

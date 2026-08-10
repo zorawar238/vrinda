@@ -37,7 +37,18 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
     const saved = typeof window !== 'undefined' ? localStorage.getItem('cartItems') : null;
-    return saved ? JSON.parse(saved) : [];
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        // Sanitize: ensure all required fields exist and are correct types
+        return parsed.filter((item: any) => 
+          item && item._id && item.name && typeof item.price === 'number' && typeof item.qty === 'number' && item.image
+        );
+      } catch (e) {
+        return [];
+      }
+    }
+    return [];
   });
 
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>(() => {

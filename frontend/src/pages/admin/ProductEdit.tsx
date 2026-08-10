@@ -12,6 +12,9 @@ export function ProductEdit() {
   const [stock, setStock] = useState(0);
   const [description, setDescription] = useState('');
   const [isTrending, setIsTrending] = useState(false);
+  const [sizes, setSizes] = useState<string[]>([]);
+  
+  const AVAILABLE_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -40,6 +43,7 @@ export function ProductEdit() {
         setStock(data.stock);
         setDescription(data.description);
         setIsTrending(data.isTrending || false);
+        setSizes(data.sizes || []);
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -91,8 +95,7 @@ export function ProductEdit() {
           Authorization: `Bearer ${userInfo?.token}`,
         },
         body: JSON.stringify({
-          name, price, image, category, stock, description, isTrending,
-          sizes: ['S', 'M', 'L'] // Default sizes for now
+          name, price, image, category, stock, description, isTrending, sizes
         }),
       });
 
@@ -204,6 +207,29 @@ export function ProductEdit() {
               onChange={(e) => setDescription(e.target.value)}
               required
             ></textarea>
+          </div>
+
+          <div>
+            <label className="block font-bold uppercase mb-4">Sizes Available</label>
+            <div className="flex flex-wrap gap-4">
+              {AVAILABLE_SIZES.map((size) => (
+                <label key={size} className="flex items-center gap-2 cursor-pointer bg-secondary p-3 border-4 border-foreground hover:bg-background transition-colors">
+                  <input
+                    type="checkbox"
+                    className="w-5 h-5 accent-primary"
+                    checked={sizes.includes(size)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSizes([...sizes, size]);
+                      } else {
+                        setSizes(sizes.filter((s) => s !== size));
+                      }
+                    }}
+                  />
+                  <span className="font-bold">{size}</span>
+                </label>
+              ))}
+            </div>
           </div>
 
           <div className="flex items-center gap-4">

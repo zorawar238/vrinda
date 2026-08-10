@@ -5,6 +5,7 @@ interface UserInfo {
   name: string;
   email: string;
   isAdmin: boolean;
+  wishlist?: any[];
   token: string;
 }
 

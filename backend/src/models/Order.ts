@@ -25,6 +25,7 @@ export interface IOrder extends Document {
   paidAt?: Date;
   isDelivered: boolean;
   deliveredAt?: Date;
+  status: string;
 }
 
 const orderSchema = new Schema<IOrder>(
@@ -93,6 +94,12 @@ const orderSchema = new Schema<IOrder>(
     },
     deliveredAt: {
       type: Date,
+    },
+    status: {
+      type: String,
+      required: true,
+      default: 'Processing',
+      enum: ['Processing', 'Shipped', 'Delivered'],
     },
   },
   {

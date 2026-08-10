@@ -62,6 +62,28 @@ export function UserList() {
     }
   };
 
+  const toggleAdminHandler = async (id: string, isAdmin: boolean) => {
+    if (window.confirm(`Are you sure you want to ${isAdmin ? 'remove' : 'make'} this user an admin?`)) {
+      try {
+        const res = await fetch(`/api/users/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userInfo?.token}`,
+          },
+          body: JSON.stringify({ isAdmin: !isAdmin }),
+        });
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.message || 'Error updating user role');
+        }
+        fetchUsers();
+      } catch (err: any) {
+        setError(err.message);
+      }
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-20 min-h-screen">
       <div className="flex justify-between items-center mb-8 border-b-4 border-foreground pb-4">
@@ -102,13 +124,23 @@ export function UserList() {
                     )}
                   </td>
                   <td className="p-4">
-                    {!user.isAdmin && (
-                      <button 
-                        onClick={() => deleteHandler(user._id)}
-                        className="p-2 text-red-500 hover:bg-red-500 hover:text-white border-2 border-transparent hover:border-foreground transition-colors"
-                      >
-                        <Trash2 className="w-5 h-5" />
-                      </button>
+                    {user._id !== userInfo?._id && (
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => toggleAdminHandler(user._id, user.isAdmin)}
+                          className="px-3 py-1 bg-secondary text-foreground border-2 border-foreground hover:bg-foreground hover:text-background font-bold text-sm uppercase transition-colors"
+                        >
+                          {user.isAdmin ? 'Revoke Admin' : 'Make Admin'}
+                        </button>
+                        {!user.isAdmin && (
+                          <button 
+                            onClick={() => deleteHandler(user._id)}
+                            className="p-2 text-red-500 hover:bg-red-500 hover:text-white border-2 border-transparent hover:border-foreground transition-colors title='Delete User'"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        )}
+                      </div>
                     )}
                   </td>
                 </tr>

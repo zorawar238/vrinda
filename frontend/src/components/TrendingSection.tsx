@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Flame } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { WishlistButton } from './WishlistButton';
+import { Rating } from './Rating';
 
 interface Product {
   _id: string;
@@ -9,6 +11,8 @@ interface Product {
   image: string;
   stock: number;
   isTrending?: boolean;
+  rating?: number;
+  numReviews?: number;
 }
 
 export function TrendingSection() {
@@ -63,10 +67,19 @@ export function TrendingSection() {
                   <Link to={`/product/${item._id}`} className="hover:text-primary transition-colors">
                     <h3 className="font-display font-bold text-4xl uppercase mb-2 leading-tight">{item.name}</h3>
                   </Link>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Rating value={item.rating || 0} />
+                    <span className="text-sm font-bold opacity-70">({item.numReviews || 0})</span>
+                  </div>
                   <p className="font-bold text-2xl text-primary mb-8">₹{item.price}</p>
-                  <Link to={`/product/${item._id}`} className="block text-center w-full bg-foreground text-background font-bold py-4 border-4 border-foreground hover:bg-background hover:text-foreground transition-colors uppercase text-xl">
-                    Snag it Now
-                  </Link>
+                  <div className="flex gap-2">
+                    <Link to={`/product/${item._id}`} className="flex-grow text-center bg-foreground text-background font-bold py-4 border-4 border-foreground hover:bg-background hover:text-foreground transition-colors uppercase text-xl">
+                      Snag it Now
+                    </Link>
+                    <div className="flex items-center">
+                      <WishlistButton product={item} />
+                    </div>
+                  </div>
                 </div>
               </div>
             ))

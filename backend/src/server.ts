@@ -7,6 +7,7 @@ import productRoutes from './routes/productRoutes';
 import userRoutes from './routes/userRoutes';
 import uploadRoutes from './routes/uploadRoutes';
 import orderRoutes from './routes/orderRoutes';
+import paymentRoutes from './routes/paymentRoutes';
 
 dotenv.config();
 connectDB();
@@ -23,6 +24,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/payment', paymentRoutes);
 
 // Make uploads folder static
 const __dirname = path.resolve();

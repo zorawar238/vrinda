@@ -6,7 +6,7 @@ const Payment = () => {
   const { shippingAddress, savePaymentMethod, paymentMethod } = useCart();
   const navigate = useNavigate();
 
-  const [payment, setPayment] = useState(paymentMethod || 'PayPal');
+  const [payment, setPayment] = useState(paymentMethod || 'Razorpay');
 
   useEffect(() => {
     if (!shippingAddress.address) {
@@ -33,20 +33,20 @@ const Payment = () => {
               <input 
                 type="radio" 
                 name="paymentMethod" 
-                value="PayPal" 
-                checked={payment === 'PayPal'}
+                value="Razorpay" 
+                checked={payment === 'Razorpay'}
                 onChange={(e) => setPayment(e.target.value)}
-                className="w-6 h-6 accent-primary"
+                className="w-5 h-5 accent-primary"
               />
-              <span className="font-bold text-lg uppercase">PayPal or Credit Card</span>
+              <span className="font-bold text-lg">Razorpay (Cards / UPI / NetBanking)</span>
             </label>
 
             <label className="flex items-center space-x-4 p-4 border-4 border-foreground bg-secondary cursor-pointer hover:bg-background transition-colors">
               <input 
                 type="radio" 
                 name="paymentMethod" 
-                value="Stripe" 
-                checked={payment === 'Stripe'}
+                value="Cash on Delivery" 
+                checked={payment === 'Cash on Delivery'}
                 onChange={(e) => setPayment(e.target.value)}
                 className="w-6 h-6 accent-primary"
               />

@@ -11,6 +11,7 @@ interface Order {
   paidAt: string;
   isDelivered: boolean;
   deliveredAt: string;
+  status: string;
 }
 
 const OrderList = () => {
@@ -68,7 +69,7 @@ const OrderList = () => {
                 <th className="p-4 border-b-4 border-r-4 border-foreground">DATE</th>
                 <th className="p-4 border-b-4 border-r-4 border-foreground">TOTAL</th>
                 <th className="p-4 border-b-4 border-r-4 border-foreground">PAID</th>
-                <th className="p-4 border-b-4 border-r-4 border-foreground">DELIVERED</th>
+                <th className="p-4 border-b-4 border-r-4 border-foreground">STATUS</th>
                 <th className="p-4 border-b-4 border-foreground">ACTIONS</th>
               </tr>
             </thead>
@@ -82,8 +83,10 @@ const OrderList = () => {
                   <td className="p-4 border-r-4 border-foreground">
                     {order.isPaid ? order.paidAt.substring(0, 10) : <span className="text-red-500 font-bold">❌</span>}
                   </td>
-                  <td className="p-4 border-r-4 border-foreground">
-                    {order.isDelivered ? order.deliveredAt.substring(0, 10) : <span className="text-red-500 font-bold">❌</span>}
+                  <td className="p-4 border-r-4 border-foreground font-bold uppercase">
+                    <span className={order.status === 'Delivered' ? 'text-primary' : ''}>
+                      {order.status || 'Processing'}
+                    </span>
                   </td>
                   <td className="p-4 border-foreground">
                     <Link to={`/order/${order._id}`}>
