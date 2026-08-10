@@ -5,12 +5,23 @@ import type { AuthRequest } from '../middleware/authMiddleware.js';
 // @desc    Fetch all products
 // @route   GET /api/products
 // @access  Public
+const escapeRegex = (text: string) => {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+};
+
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const keyword = req.query.search
+    const pageSize = 12; // 12 items per page
+    const page = Number(req.query.page) || 1;
+
+    const searchStr = req.query.search ? String(req.query.search) : '';
+    // Limit search string length to prevent regex DOS
+    const safeSearchStr = searchStr.substring(0, 100);
+
+    const keyword = safeSearchStr
       ? {
           name: {
-            $regex: req.query.search,
+            $regex: escapeRegex(safeSearchStr),
             $options: 'i',
           },
         }
@@ -28,8 +39,13 @@ export const getProducts = async (req: Request, res: Response) => {
       sortOption = { createdAt: -1 };
     }
 
-    const products = await Product.find({ ...keyword, ...category }).sort(sortOption as any);
-    res.json(products);
+    const count = await Product.countDocuments({ ...keyword, ...category } as any);
+    const products = await Product.find({ ...keyword, ...category } as any)
+      .sort(sortOption as any)
+      .limit(pageSize)
+      .skip(pageSize * (page - 1));
+
+    res.json({ products, page, pages: Math.ceil(count / pageSize) });
   } catch (error: any) {
     console.error(`Error fetching products: ${error.message}`);
     res.status(500).json({ message: 'Server Error' });

@@ -13,8 +13,8 @@ export interface IUser extends Document {
     image: string;
     price: number;
   }[];
-  resetPasswordToken?: string;
-  resetPasswordExpire?: Date;
+  resetPasswordToken?: string | undefined;
+  resetPasswordExpire?: Date | undefined;
   matchPassword(enteredPassword: string): Promise<boolean>;
   getResetPasswordToken(): string;
 }

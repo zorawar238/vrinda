@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
@@ -30,9 +30,7 @@ const OrderList = () => {
     const fetchOrders = async () => {
       try {
         const res = await fetch('/api/orders', {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
+          credentials: 'include',
         });
         const data = await res.json();
         

@@ -1,7 +1,8 @@
 import express from 'express';
 import type { Request, Response } from 'express';
+import rateLimit from 'express-rate-limit';
 import Razorpay from 'razorpay';
-import { protect } from '../middleware/authMiddleware.js';
+import { protect, type AuthRequest } from '../middleware/authMiddleware.js';
 import { Order } from '../models/Order.js';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -9,11 +10,24 @@ dotenv.config();
 const router = express.Router();
 
 router.get('/razorpay-key', (req: Request, res: Response) => {
-  res.send({ keyId: process.env.RAZORPAY_KEY_ID || 'rzp_test_mockKey' });
+  if (!process.env.RAZORPAY_KEY_ID) {
+    throw new Error('RAZORPAY_KEY_ID is missing');
+  }
+  res.send({ keyId: process.env.RAZORPAY_KEY_ID });
 });
 
-router.post('/razorpay-order', protect, async (req: Request, res: Response): Promise<void> => {
+const paymentLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: 'Too many payment requests, please try again later',
+});
+
+router.post('/razorpay-order', protect, paymentLimiter, async (req: AuthRequest, res: Response): Promise<void> => {
   try {
+    if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+      throw new Error('Razorpay keys are missing');
+    }
+
     const { orderId } = req.body;
     const order = await Order.findById(orderId);
     
@@ -22,9 +36,14 @@ router.post('/razorpay-order', protect, async (req: Request, res: Response): Pro
       return;
     }
 
+    if (order.user.toString() !== req.user?._id?.toString()) {
+      res.status(401).json({ message: 'Not authorized to pay for this order' });
+      return;
+    }
+
     const instance = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_mockKey',
-      key_secret: process.env.RAZORPAY_KEY_SECRET || 'mockSecret',
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_KEY_SECRET,
     });
 
     const options = {

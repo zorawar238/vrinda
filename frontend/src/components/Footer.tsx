@@ -16,18 +16,18 @@ export function Footer() {
           <ul className="space-y-4 font-medium uppercase">
             <li><Link to="/shop" className="hover:text-primary transition-colors block">New Arrivals</Link></li>
             <li><Link to="/shop" className="hover:text-primary transition-colors block">Best Sellers</Link></li>
-            <li><Link to="/shop" className="hover:text-primary transition-colors block">Collections</Link></li>
-            <li><Link to="/shop" className="hover:text-primary transition-colors block">Sale</Link></li>
+            <li><Link to="/collections" className="hover:text-primary transition-colors block">Collections</Link></li>
+            <li><Link to="/shop?category=sale" className="hover:text-primary transition-colors block">Sale</Link></li>
           </ul>
         </div>
 
         <div>
           <h3 className="font-display font-bold text-2xl uppercase mb-6 text-secondary">Help</h3>
           <ul className="space-y-4 font-medium uppercase">
-            <li><a href="#" className="hover:text-primary transition-colors block">FAQ</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors block">Shipping & Returns</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors block">Track Order</a></li>
-            <li><a href="#" className="hover:text-primary transition-colors block">Contact Us</a></li>
+            <li><Link to="/faq" className="hover:text-primary transition-colors block">FAQ</Link></li>
+            <li><Link to="/shipping-returns" className="hover:text-primary transition-colors block">Shipping & Returns</Link></li>
+            <li><Link to="/track-order" className="hover:text-primary transition-colors block">Track Order</Link></li>
+            <li><Link to="/contact" className="hover:text-primary transition-colors block">Contact Us</Link></li>
           </ul>
         </div>
 

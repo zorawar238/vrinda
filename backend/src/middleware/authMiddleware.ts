@@ -13,11 +13,15 @@ export interface AuthRequest extends Request {
 export const protect = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
   let token;
 
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+  if (req.cookies.jwt) {
     try {
-      token = req.headers.authorization.split(' ')[1];
+      token = req.cookies.jwt;
 
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret') as JwtPayload;
+      if (!process.env.JWT_SECRET) {
+        throw new Error('JWT_SECRET is not defined in environment variables');
+      }
+
+      const decoded = jwt.verify(token as string, process.env.JWT_SECRET as string) as unknown as JwtPayload;
 
       const user = await User.findById(decoded.userId).select('-password');
       

@@ -36,9 +36,9 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
             const res = await fetch('/api/users/wishlist', {
               method: 'PUT',
               headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${userInfo.token}`,
-              },
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
               body: JSON.stringify(wishlistItems),
             });
             if (res.ok) {
@@ -92,9 +92,9 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
         await fetch('/api/users/wishlist', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${userInfo.token}`,
-          },
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
           body: JSON.stringify(item),
         });
       } catch (error) {
@@ -110,9 +110,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
       try {
         await fetch(`/api/users/wishlist/${id}`, {
           method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
+          credentials: 'include',
         });
       } catch (error) {
         console.error("Failed to remove from backend wishlist", error);

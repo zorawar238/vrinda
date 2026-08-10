@@ -23,6 +23,12 @@ export interface IOrder extends Document {
   totalPrice: number;
   isPaid: boolean;
   paidAt?: Date;
+  paymentResult?: {
+    id: string;
+    status: string;
+    update_time: string;
+    email_address: string;
+  };
   isDelivered: boolean;
   deliveredAt?: Date;
   status: string;
@@ -86,6 +92,12 @@ const orderSchema = new Schema<IOrder>(
     },
     paidAt: {
       type: Date,
+    },
+    paymentResult: {
+      id: { type: String },
+      status: { type: String },
+      update_time: { type: String },
+      email_address: { type: String },
     },
     isDelivered: {
       type: Boolean,

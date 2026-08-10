@@ -20,10 +20,10 @@ export function ProductGrid() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/products');
+        const response = await fetch('/api/products', { credentials: 'include' });
         if (response.ok) {
           const data = await response.json();
-          setProducts(data.slice(0, 4)); // Show only first 4
+          setProducts((data.products ? data.products : data).slice(0, 4)); // Show only first 4
         }
         setLoading(false);
       } catch (error) {

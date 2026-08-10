@@ -38,14 +38,14 @@ export function ProductDetail() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`/api/products/${id}`);
+        const response = await fetch(`/api/products/${id}`, { credentials: 'include' });
         if (!response.ok) throw new Error('Product not found');
         const data = await response.json();
         setProduct(data);
 
         // Fetch related products
         try {
-          const relatedRes = await fetch(`/api/products/${id}/related`);
+          const relatedRes = await fetch(`/api/products/${id}/related`, { credentials: 'include' });
           if (relatedRes.ok) {
             const relatedData = await relatedRes.json();
             setRelatedProducts(relatedData);
@@ -92,9 +92,9 @@ export function ProductDetail() {
       const res = await fetch(`/api/products/${id}/reviews`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo?.token}`,
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ rating, comment }),
       });
 
@@ -106,7 +106,7 @@ export function ProductDetail() {
       setComment('');
       
       // Refetch product to get new review
-      const productRes = await fetch(`/api/products/${id}`);
+      const productRes = await fetch(`/api/products/${id}`, { credentials: 'include' });
       if (productRes.ok) {
         const productData = await productRes.json();
         setProduct(productData);

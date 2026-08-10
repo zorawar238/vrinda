@@ -20,6 +20,10 @@ import { ProductEdit } from './pages/admin/ProductEdit';
 import { UserList } from './pages/admin/UserList';
 import OrderList from './pages/admin/OrderList';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import { FAQ } from './pages/FAQ';
+import { ShippingReturns } from './pages/ShippingReturns';
+import { ContactUs } from './pages/ContactUs';
+import { TrackOrder } from './pages/TrackOrder';
 import { WishlistProvider } from './context/WishlistContext';
 
 function App() {
@@ -42,6 +46,10 @@ function App() {
           <Route path="placeorder" element={<PlaceOrder />} />
           <Route path="order/:id" element={<Order />} />
           <Route path="wishlist" element={<Wishlist />} />
+          <Route path="faq" element={<FAQ />} />
+          <Route path="shipping-returns" element={<ShippingReturns />} />
+          <Route path="contact" element={<ContactUs />} />
+          <Route path="track-order" element={<TrackOrder />} />
           
           {/* Admin Routes */}
           <Route path="admin/dashboard" element={<AdminDashboard />} />

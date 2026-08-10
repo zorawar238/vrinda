@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import { connectDB } from './config/db';
-import { Product } from './models/Product';
-import { User } from './models/User';
-import { products } from './data/products';
+import { connectDB } from './config/db.js';
+import { Product } from './models/Product.js';
+import { User } from './models/User.js';
+import { products } from './data/products.js';
 
 dotenv.config();
 connectDB();

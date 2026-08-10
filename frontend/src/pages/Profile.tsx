@@ -57,9 +57,9 @@ export function Profile() {
       const res = await fetch('/api/users/profile', {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo?.token}`,
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ name, email, password }),
       });
       const data = await res.json();
@@ -86,9 +86,7 @@ export function Profile() {
     const fetchMyOrders = async () => {
       try {
         const res = await fetch('/api/orders/mine', {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
+          credentials: 'include',
         });
         const data = await res.json();
         

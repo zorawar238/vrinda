@@ -32,7 +32,7 @@ export function ProductEdit() {
 
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`/api/products/${productId}`);
+        const res = await fetch(`/api/products/${productId}`, { credentials: 'include' });
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Product not found');
         
@@ -65,9 +65,7 @@ export function ProductEdit() {
     try {
       const res = await fetch('/api/upload', {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${userInfo?.token}`,
-        },
+        credentials: 'include',
         body: formData,
       });
 
@@ -91,9 +89,9 @@ export function ProductEdit() {
       const res = await fetch(`/api/products/${productId}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo?.token}`,
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({
           name, price, image, category, stock, description, isTrending, sizes
         }),

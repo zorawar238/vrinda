@@ -22,11 +22,11 @@ export function TrendingSection() {
   useEffect(() => {
     const fetchTrending = async () => {
       try {
-        const response = await fetch('/api/products');
+        const response = await fetch('/api/products', { credentials: 'include' });
         if (response.ok) {
           const data = await response.json();
           // Filter to only items where isTrending is true, take top 2
-          const trending = data.filter((p: Product) => p.isTrending).slice(0, 2);
+          const trending = (data.products ? data.products : data).filter((p: Product) => p.isTrending).slice(0, 2);
           setTrendingItems(trending);
         }
         setLoading(false);

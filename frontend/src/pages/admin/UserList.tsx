@@ -28,9 +28,7 @@ export function UserList() {
   const fetchUsers = async () => {
     try {
       const res = await fetch('/api/users', {
-        headers: {
-          Authorization: `Bearer ${userInfo?.token}`,
-        },
+        credentials: 'include',
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Error fetching users');
@@ -47,9 +45,7 @@ export function UserList() {
       try {
         const res = await fetch(`/api/users/${id}`, {
           method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${userInfo?.token}`,
-          },
+          credentials: 'include',
         });
         if (!res.ok) {
           const data = await res.json();
@@ -68,9 +64,9 @@ export function UserList() {
         const res = await fetch(`/api/users/${id}`, {
           method: 'PUT',
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${userInfo?.token}`,
-          },
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
           body: JSON.stringify({ isAdmin: !isAdmin }),
         });
         if (!res.ok) {

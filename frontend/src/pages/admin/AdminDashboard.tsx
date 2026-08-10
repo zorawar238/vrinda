@@ -23,7 +23,7 @@ interface AnalyticsData {
 }
 
 export function AdminDashboard() {
-  const { userInfo } = useAuth();
+  const { userInfo, logout } = useAuth();
   const navigate = useNavigate();
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -38,13 +38,14 @@ export function AdminDashboard() {
     const fetchAnalytics = async () => {
       try {
         const res = await fetch('/api/orders/analytics', {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
+          credentials: 'include',
         });
         if (res.ok) {
           const analyticsData = await res.json();
           setData(analyticsData);
+        } else if (res.status === 401) {
+          await logout();
+          navigate('/login');
         } else {
           setError('Failed to fetch analytics');
         }
@@ -56,7 +57,7 @@ export function AdminDashboard() {
     };
 
     fetchAnalytics();
-  }, [userInfo, navigate]);
+  }, [userInfo, navigate, logout]);
 
   if (loading) {
     return <div className="max-w-7xl mx-auto px-6 py-24"><h2 className="text-4xl font-bold uppercase">Loading Analytics...</h2></div>;

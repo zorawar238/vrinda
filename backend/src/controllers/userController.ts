@@ -15,14 +15,13 @@ export const authUser = async (req: Request, res: Response): Promise<void> => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-      const token = generateToken(user._id as string);
+      generateToken(res, user._id as unknown as string);
       res.json({
         _id: user._id,
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
         wishlist: user.wishlist,
-        token,
       });
     } else {
       res.status(401).json({ message: 'Invalid email or password' });
@@ -54,14 +53,13 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
     });
 
     if (user) {
-      const token = generateToken(user._id as string);
+      generateToken(res, user._id as unknown as string);
       res.status(201).json({
         _id: user._id,
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
         wishlist: user.wishlist,
-        token,
       });
     } else {
       res.status(400).json({ message: 'Invalid user data' });
@@ -111,14 +109,13 @@ export const updateUserProfile = async (req: AuthRequest, res: Response): Promis
       }
 
       const updatedUser = await user.save();
-      const token = generateToken(updatedUser._id as string);
+      generateToken(res, updatedUser._id as unknown as string);
 
       res.json({
         _id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
         isAdmin: updatedUser.isAdmin,
-        token,
       });
     } else {
       res.status(404).json({ message: 'User not found' });
@@ -290,7 +287,8 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
     const user = await User.findOne({ email: req.body.email });
 
     if (!user) {
-      res.status(404).json({ message: 'There is no user with that email' });
+      // Return success even if email not found to prevent enumeration
+      res.status(200).json({ message: 'If that email exists in our system, a reset link has been sent.' });
       return;
     }
 
@@ -300,8 +298,8 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
     await user.save({ validateBeforeSave: false });
 
     // Create reset url
-    // In production, you would use your actual domain
-    const resetUrl = `${req.protocol}://${req.get('host')?.replace('5000', '5173')}/reset-password/${resetToken}`;
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
 
     const message = `You are receiving this email because you (or someone else) has requested a password reset. Please click the following link to reset your password: \n\n ${resetUrl}`;
     const html = `
@@ -319,7 +317,7 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
         html,
       });
 
-      res.status(200).json({ message: 'Email sent' });
+      res.status(200).json({ message: 'If that email exists in our system, a reset link has been sent.' });
     } catch (err) {
       user.resetPasswordToken = undefined;
       user.resetPasswordExpire = undefined;
@@ -341,7 +339,7 @@ export const resetPassword = async (req: Request, res: Response): Promise<void> 
     // Get hashed token
     const resetPasswordToken = crypto
       .createHash('sha256')
-      .update(req.params.token)
+      .update(req.params.token as string)
       .digest('hex');
 
     const user = await User.findOne({
@@ -365,4 +363,15 @@ export const resetPassword = async (req: Request, res: Response): Promise<void> 
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
+};
+
+// @desc    Logout user / clear cookie
+// @route   POST /api/users/logout
+// @access  Public
+export const logoutUser = (req: Request, res: Response) => {
+  res.cookie('jwt', '', {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({ message: 'Logged out successfully' });
 };

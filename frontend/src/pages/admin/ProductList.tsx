@@ -27,10 +27,10 @@ export function ProductList() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch('/api/products');
+      const res = await fetch('/api/products', { credentials: 'include' });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Error fetching products');
-      setProducts(data);
+      setProducts(data.products ? data.products : data);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -42,9 +42,7 @@ export function ProductList() {
     try {
       const res = await fetch('/api/products', {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${userInfo?.token}`,
-        },
+        credentials: 'include',
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Error creating product');
@@ -59,9 +57,7 @@ export function ProductList() {
       try {
         const res = await fetch(`/api/products/${id}`, {
           method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${userInfo?.token}`,
-          },
+          credentials: 'include',
         });
         if (!res.ok) {
           const data = await res.json();

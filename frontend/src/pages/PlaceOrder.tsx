@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
 
 const PlaceOrder = () => {
   const { cartItems, shippingAddress, paymentMethod, cartTotal, clearCart } = useCart();
-  const { userInfo } = useAuth();
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -36,9 +34,9 @@ const PlaceOrder = () => {
       const res = await fetch('/api/orders', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo?.token}`,
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({
           orderItems: cartItems,
           shippingAddress,

@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
 
 interface UserInfo {
   _id: string;
@@ -6,7 +7,6 @@ interface UserInfo {
   email: string;
   isAdmin: boolean;
   wishlist?: any[];
-  token: string;
 }
 
 interface AuthContextType {
@@ -35,7 +35,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUserInfo(data);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await fetch('/api/users/logout', { method: 'POST' });
+    } catch (err) {
+      console.error(err);
+    }
     setUserInfo(null);
   };
 

@@ -17,7 +17,7 @@ export function Shop() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   // Filter & Sort State
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -29,7 +29,7 @@ export function Shop() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('/api/products/categories');
+        const response = await fetch('/api/products/categories', { credentials: 'include' });
         const data = await response.json();
         if (response.ok) {
           setCategories(data);
@@ -58,10 +58,10 @@ export function Shop() {
         if (selectedCategory) queryParams.append('category', selectedCategory);
         if (sortOption) queryParams.append('sort', sortOption);
 
-        const response = await fetch(`/api/products?${queryParams.toString()}`);
+        const response = await fetch(`/api/products?${queryParams.toString()}`, { credentials: 'include' });
         if (!response.ok) throw new Error('Failed to fetch products');
         const data = await response.json();
-        setProducts(data);
+        setProducts(data.products ? data.products : data);
         setLoading(false);
       } catch (err: any) {
         setError(err.message);

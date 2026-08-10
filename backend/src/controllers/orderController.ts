@@ -1,6 +1,7 @@
 import type { Response } from 'express';
 import { Order } from '../models/Order.js';
 import { User } from '../models/User.js';
+import { Product } from '../models/Product.js';
 import type { AuthRequest } from '../middleware/authMiddleware.js';
 
 // @desc    Create new order
@@ -12,22 +13,47 @@ export const addOrderItems = async (req: AuthRequest, res: Response): Promise<vo
       orderItems,
       shippingAddress,
       paymentMethod,
-      itemsPrice,
-      taxPrice,
-      shippingPrice,
-      totalPrice,
     } = req.body;
 
     if (orderItems && orderItems.length === 0) {
       res.status(400).json({ message: 'No order items' });
       return;
     } else {
+      // Calculate prices securely on the server and validate qty/size/stock
+      const dbOrderItems = await Promise.all(
+        orderItems.map(async (clientItem: any) => {
+          const product = await Product.findById(clientItem._id || clientItem.product);
+          if (!product) throw new Error(`Product not found`);
+          
+          const qty = Number(clientItem.qty);
+          if (!Number.isInteger(qty) || qty <= 0) {
+            throw new Error(`Invalid quantity for ${product.name}`);
+          }
+          if (qty > product.stock) {
+            throw new Error(`Insufficient stock for ${product.name}`);
+          }
+          if (!product.sizes.includes(clientItem.size)) {
+            throw new Error(`Invalid size for ${product.name}`);
+          }
+
+          return {
+            name: product.name,
+            qty,
+            image: product.image,
+            price: product.price,
+            product: product._id,
+            size: clientItem.size,
+          };
+        })
+      );
+
+      const itemsPrice = dbOrderItems.reduce((acc, item) => acc + item.price * item.qty, 0);
+      const shippingPrice = itemsPrice > 500 ? 0 : 50;
+      const taxPrice = Number((0.15 * itemsPrice).toFixed(2));
+      const totalPrice = Number((itemsPrice + shippingPrice + taxPrice).toFixed(2));
+
       const order = new Order({
-        orderItems: orderItems.map((x: any) => ({
-          ...x,
-          product: x._id,
-          _id: undefined,
-        })),
+        orderItems: dbOrderItems,
         user: req.user?._id,
         shippingAddress,
         paymentMethod,
@@ -51,7 +77,7 @@ export const addOrderItems = async (req: AuthRequest, res: Response): Promise<vo
 // @access  Private
 export const getMyOrders = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const orders = await Order.find({ user: req.user?._id });
+    const orders = await Order.find({ user: req.user?._id as any });
     res.json(orders);
   } catch (error: any) {
     console.error(error);
@@ -123,6 +149,7 @@ export const getOrders = async (req: AuthRequest, res: Response): Promise<void> 
 };
 
 import crypto from 'crypto';
+import Razorpay from 'razorpay';
 
 // @desc    Update order to paid
 // @route   PUT /api/orders/:id/pay
@@ -131,8 +158,12 @@ export const payOrder = async (req: AuthRequest, res: Response): Promise<void> =
   try {
     const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
     
+    const secret = process.env.RAZORPAY_KEY_SECRET;
+    if (!secret) {
+      throw new Error('RAZORPAY_KEY_SECRET is missing');
+    }
+
     // Verify signature
-    const secret = process.env.RAZORPAY_KEY_SECRET || 'mockSecret';
     const body = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSignature = crypto
       .createHmac('sha256', secret)
@@ -147,6 +178,30 @@ export const payOrder = async (req: AuthRequest, res: Response): Promise<void> =
     const order = await Order.findById(req.params.id);
 
     if (order) {
+      if (order.user.toString() !== req.user?._id?.toString()) {
+        res.status(401).json({ message: 'Not authorized to pay for this order' });
+        return;
+      }
+
+      // Verify the Razorpay order matches this DB order
+      const instance = new Razorpay({
+        key_id: process.env.RAZORPAY_KEY_ID as string,
+        key_secret: secret,
+      });
+
+      const rzpOrder = await instance.orders.fetch(razorpay_order_id);
+      
+      if (rzpOrder.receipt !== `receipt_order_${order._id}`) {
+        res.status(400).json({ message: 'Payment receipt mismatch' });
+        return;
+      }
+
+      const expectedAmount = Math.round(order.totalPrice * 100);
+      if (rzpOrder.amount !== expectedAmount) {
+        res.status(400).json({ message: 'Payment amount mismatch' });
+        return;
+      }
+
       order.isPaid = true;
       order.paidAt = new Date();
       order.paymentResult = {
@@ -157,6 +212,16 @@ export const payOrder = async (req: AuthRequest, res: Response): Promise<void> =
       };
 
       const updatedOrder = await order.save();
+
+      // Atomically decrement stock
+      const bulkOps = order.orderItems.map((item) => ({
+        updateOne: {
+          filter: { _id: item.product },
+          update: { $inc: { stock: -item.qty } },
+        },
+      }));
+      await Product.bulkWrite(bulkOps);
+
       res.json(updatedOrder);
     } else {
       res.status(404).json({ message: 'Order not found' });

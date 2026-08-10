@@ -38,14 +38,14 @@ export function CartDrawer() {
             </div>
           ) : (
             cartItems.map((item) => (
-              <div key={item.id} className="flex gap-4 border-2 border-foreground p-3 bg-secondary">
+              <div key={item._id + item.size} className="flex gap-4 border-2 border-foreground p-3 bg-secondary">
                 <div className="w-24 h-32 border-2 border-foreground bg-background overflow-hidden flex-shrink-0">
-                  <img src={item.img} alt={item.name} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all" />
+                  <img src={item.image} alt={item.name} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all" />
                 </div>
                 <div className="flex flex-col justify-between flex-1">
                   <div>
                     <h3 className="font-bold uppercase text-lg leading-tight mb-1">
-                      <Link to={`/product/${item.productId}`} onClick={closeCart} className="hover:text-primary transition-colors">
+                      <Link to={`/product/${item._id}`} onClick={closeCart} className="hover:text-primary transition-colors">
                         {item.name}
                       </Link>
                     </h3>
@@ -55,21 +55,21 @@ export function CartDrawer() {
                   <div className="flex items-center justify-between mt-4">
                     <div className="flex items-center border-2 border-foreground bg-background">
                       <button 
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        onClick={() => updateQuantity(item._id, item.size, item.qty - 1)}
                         className="px-2 py-1 hover:bg-foreground hover:text-background transition-colors"
                       >
                         <Minus className="w-4 h-4" />
                       </button>
-                      <span className="font-bold px-3 py-1 border-x-2 border-foreground">{item.quantity}</span>
+                      <span className="font-bold px-3 py-1 border-x-2 border-foreground">{item.qty}</span>
                       <button 
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        onClick={() => updateQuantity(item._id, item.size, item.qty + 1)}
                         className="px-2 py-1 hover:bg-foreground hover:text-background transition-colors"
                       >
                         <Plus className="w-4 h-4" />
                       </button>
                     </div>
                     <button 
-                      onClick={() => removeFromCart(item.id)}
+                      onClick={() => removeFromCart(item._id, item.size)}
                       className="p-2 text-foreground hover:text-primary hover:bg-foreground/10 transition-colors"
                     >
                       <Trash2 className="w-5 h-5" />

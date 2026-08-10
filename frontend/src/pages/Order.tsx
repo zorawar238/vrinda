@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -48,9 +48,7 @@ const Order = () => {
     const fetchOrder = async () => {
       try {
         const res = await fetch(`/api/orders/${id}`, {
-          headers: {
-            Authorization: `Bearer ${userInfo?.token}`,
-          },
+          credentials: 'include',
         });
         const data = await res.json();
         
@@ -75,9 +73,9 @@ const Order = () => {
       const res = await fetch(`/api/orders/${id}/status`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo?.token}`,
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ status: newStatus }),
       });
       const data = await res.json();
@@ -96,16 +94,16 @@ const Order = () => {
     setPayLoading(true);
     try {
       // 1. Fetch Razorpay Key
-      const keyRes = await fetch('/api/payment/razorpay-key');
+      const keyRes = await fetch('/api/payment/razorpay-key', { credentials: 'include' });
       const { keyId } = await keyRes.json();
 
       // 2. Create Razorpay Order
       const orderRes = await fetch('/api/payment/razorpay-order', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo?.token}`,
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ orderId: id }),
       });
       const orderData = await orderRes.json();
@@ -126,9 +124,9 @@ const Order = () => {
             const verifyRes = await fetch(`/api/orders/${id}/pay`, {
               method: 'PUT',
               headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${userInfo?.token}`,
-              },
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
               body: JSON.stringify({
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_order_id: response.razorpay_order_id,
