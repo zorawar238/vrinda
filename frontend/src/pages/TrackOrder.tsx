@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export function TrackOrder() {
@@ -25,17 +24,17 @@ export function TrackOrder() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-24 min-h-[70vh] flex flex-col justify-center">
-      <div className="bg-background border-4 border-foreground shadow-[16px_16px_0px_0px_rgba(17,17,17,1)] p-8 md:p-12 text-center">
-        <h1 className="text-5xl md:text-6xl font-display font-bold uppercase tracking-tighter mb-4">
-          Track Your Order
+    <div className="max-w-3xl mx-auto px-6 py-24 min-h-[70vh] flex flex-col justify-center animate-fade-in">
+      <div className="border border-foreground/10 bg-background/50 p-10 md:p-16 text-center">
+        <h1 className="text-4xl md:text-5xl font-display tracking-wide mb-4">
+          Track Order
         </h1>
-        <p className="text-xl font-medium mb-12 text-foreground/80">
+        <p className="font-sans text-sm tracking-wide text-foreground/60 mb-12">
           Enter your order ID below to check its current status.
         </p>
 
         {error && (
-          <div className="mb-6 bg-red-500 text-white font-bold p-4 border-4 border-foreground uppercase text-left">
+          <div className="mb-8 bg-red-500/10 text-red-500 font-sans text-sm tracking-wide p-4">
             {error}
           </div>
         )}
@@ -46,13 +45,13 @@ export function TrackOrder() {
             value={orderId}
             onChange={(e) => setOrderId(e.target.value)}
             placeholder="e.g. 64b8f...a12c"
-            className="flex-1 bg-secondary/10 border-4 border-foreground px-6 py-4 font-bold outline-none focus:border-primary transition-colors text-xl font-mono uppercase placeholder:text-gray-400"
+            className="flex-1 border-b border-foreground/30 bg-transparent px-4 py-3 text-sm focus:outline-none focus:border-foreground transition-colors placeholder-foreground/20"
           />
           <button
             type="submit"
-            className="bg-primary text-background font-bold text-xl uppercase px-12 py-4 border-4 border-foreground hover:bg-secondary hover:text-foreground transition-colors flex items-center justify-center gap-2"
+            className="bg-foreground text-background font-sans text-xs tracking-widest uppercase px-10 py-4 hover:bg-primary transition-colors flex items-center justify-center gap-2"
           >
-            <Search className="w-6 h-6" /> Track
+            Track
           </button>
         </form>
       </div>

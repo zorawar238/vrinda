@@ -18,15 +18,15 @@ const Shipping = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-5xl font-black uppercase mb-8 tracking-tight">Shipping</h1>
+    <div className="max-w-2xl mx-auto py-12 lg:py-24 px-6 animate-fade-in">
+      <h1 className="text-3xl md:text-5xl font-display tracking-wide mb-12 text-center">Shipping Details</h1>
       
-      <form onSubmit={submitHandler} className="space-y-6">
+      <form onSubmit={submitHandler} className="space-y-8">
         <div>
-          <label className="block font-bold uppercase mb-2">Address</label>
+          <label className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-3">Address</label>
           <input 
             type="text" 
-            className="w-full border-4 border-foreground p-4 bg-secondary font-medium focus:outline-none focus:bg-background transition-colors"
+            className="w-full border-b border-foreground/30 py-3 bg-transparent text-sm focus:outline-none focus:border-foreground transition-colors placeholder-foreground/20"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             required
@@ -35,10 +35,10 @@ const Shipping = () => {
         </div>
 
         <div>
-          <label className="block font-bold uppercase mb-2">City</label>
+          <label className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-3">City</label>
           <input 
             type="text" 
-            className="w-full border-4 border-foreground p-4 bg-secondary font-medium focus:outline-none focus:bg-background transition-colors"
+            className="w-full border-b border-foreground/30 py-3 bg-transparent text-sm focus:outline-none focus:border-foreground transition-colors placeholder-foreground/20"
             value={city}
             onChange={(e) => setCity(e.target.value)}
             required
@@ -47,10 +47,10 @@ const Shipping = () => {
         </div>
 
         <div>
-          <label className="block font-bold uppercase mb-2">Postal Code</label>
+          <label className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-3">Postal Code</label>
           <input 
             type="text" 
-            className="w-full border-4 border-foreground p-4 bg-secondary font-medium focus:outline-none focus:bg-background transition-colors"
+            className="w-full border-b border-foreground/30 py-3 bg-transparent text-sm focus:outline-none focus:border-foreground transition-colors placeholder-foreground/20"
             value={postalCode}
             onChange={(e) => setPostalCode(e.target.value)}
             required
@@ -59,10 +59,10 @@ const Shipping = () => {
         </div>
 
         <div>
-          <label className="block font-bold uppercase mb-2">Country</label>
+          <label className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-3">Country</label>
           <input 
             type="text" 
-            className="w-full border-4 border-foreground p-4 bg-secondary font-medium focus:outline-none focus:bg-background transition-colors"
+            className="w-full border-b border-foreground/30 py-3 bg-transparent text-sm focus:outline-none focus:border-foreground transition-colors placeholder-foreground/20"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
             required
@@ -72,9 +72,9 @@ const Shipping = () => {
 
         <button 
           type="submit" 
-          className="w-full bg-primary text-background font-black uppercase tracking-widest py-4 px-8 border-4 border-foreground hover:bg-foreground hover:text-background transition-all"
+          className="w-full bg-foreground text-background font-sans text-xs tracking-widest uppercase py-4 hover:bg-primary transition-colors mt-8"
         >
-          Continue
+          Continue to Payment
         </button>
       </form>
     </div>

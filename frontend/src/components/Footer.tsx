@@ -2,18 +2,18 @@ import { Link } from 'react-router-dom';
 
 export function Footer() {
   return (
-    <footer className="bg-foreground text-background border-t-8 border-primary">
-      <div className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+    <footer className="bg-background border-t border-foreground/10 pt-20 pb-10 text-foreground">
+      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
         <div className="space-y-6">
-          <Link to="/" className="text-6xl font-display font-bold uppercase tracking-widest text-primary hover:opacity-80 transition-opacity block">Vrinda</Link>
-          <p className="font-medium max-w-sm">
+          <Link to="/" className="text-4xl font-display italic tracking-widest hover:text-primary transition-colors block">Vrinda</Link>
+          <p className="font-sans text-sm text-foreground/70 max-w-sm leading-relaxed">
             Unapologetic fashion for the bold. Designed in India for the new era.
           </p>
         </div>
         
         <div>
-          <h3 className="font-display font-bold text-2xl uppercase mb-6 text-secondary">Shop</h3>
-          <ul className="space-y-4 font-medium uppercase">
+          <h3 className="font-sans text-xs tracking-[0.2em] uppercase mb-6 text-foreground/50">Shop</h3>
+          <ul className="space-y-4 text-sm">
             <li><Link to="/shop" className="hover:text-primary transition-colors block">New Arrivals</Link></li>
             <li><Link to="/shop" className="hover:text-primary transition-colors block">Best Sellers</Link></li>
             <li><Link to="/collections" className="hover:text-primary transition-colors block">Collections</Link></li>
@@ -22,8 +22,8 @@ export function Footer() {
         </div>
 
         <div>
-          <h3 className="font-display font-bold text-2xl uppercase mb-6 text-secondary">Help</h3>
-          <ul className="space-y-4 font-medium uppercase">
+          <h3 className="font-sans text-xs tracking-[0.2em] uppercase mb-6 text-foreground/50">Help</h3>
+          <ul className="space-y-4 text-sm">
             <li><Link to="/faq" className="hover:text-primary transition-colors block">FAQ</Link></li>
             <li><Link to="/shipping-returns" className="hover:text-primary transition-colors block">Shipping & Returns</Link></li>
             <li><Link to="/track-order" className="hover:text-primary transition-colors block">Track Order</Link></li>
@@ -32,22 +32,22 @@ export function Footer() {
         </div>
 
         <div>
-          <h3 className="font-display font-bold text-2xl uppercase mb-6 text-secondary">Stay Bold</h3>
-          <p className="mb-4 font-medium">Join the club for 10% off your first order.</p>
-          <div className="flex border-4 border-background focus-within:border-primary transition-colors">
+          <h3 className="font-sans text-xs tracking-[0.2em] uppercase mb-6 text-foreground/50">Stay Bold</h3>
+          <p className="mb-4 text-sm text-foreground/70">Join the club for 10% off your first order.</p>
+          <div className="flex border-b border-foreground/30 focus-within:border-foreground transition-colors pb-2">
             <input 
               type="email" 
               placeholder="YOUR EMAIL" 
-              className="bg-transparent px-4 py-3 w-full outline-none placeholder:text-gray-400 font-bold uppercase"
+              className="bg-transparent w-full outline-none placeholder:text-foreground/30 text-sm tracking-wide"
             />
-            <button className="bg-primary text-foreground font-bold px-6 uppercase hover:bg-secondary transition-colors border-l-4 border-background">
-              Go
+            <button className="text-foreground text-sm uppercase tracking-widest hover:text-primary transition-colors">
+              Submit
             </button>
           </div>
         </div>
       </div>
       
-      <div className="border-t-4 border-background/20 py-6 text-center font-bold uppercase text-sm">
+      <div className="max-w-7xl mx-auto px-6 border-t border-foreground/10 pt-8 text-center text-xs text-foreground/40 tracking-widest uppercase">
         <p>&copy; {new Date().getFullYear()} Vrinda. All Rights Reserved.</p>
       </div>
     </footer>

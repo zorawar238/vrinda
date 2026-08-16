@@ -28,53 +28,56 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-24 min-h-screen">
-      <div className="mb-12 border-b-8 border-foreground pb-6">
-        <h1 className="text-6xl md:text-8xl font-display font-bold uppercase tracking-tighter">
-          F.A.Q.
+    <div className="max-w-4xl mx-auto px-6 py-24 min-h-screen animate-fade-in">
+      <div className="mb-20 text-center">
+        <h1 className="text-5xl md:text-7xl font-display tracking-wide mb-6">
+          FAQ
         </h1>
-        <p className="text-2xl font-bold uppercase mt-4 text-primary">
-          Frequently Asked Questions
+        <p className="font-sans text-xs tracking-widest uppercase text-foreground/50">
+          Everything you need to know
         </p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-2">
         {faqs.map((faq, index) => (
           <div 
             key={index} 
-            className="border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(17,17,17,1)] bg-background transition-all hover:-translate-y-1 hover:shadow-[12px_12px_0px_0px_rgba(17,17,17,1)]"
+            className="border-b border-foreground/10 last:border-0"
           >
             <button
               onClick={() => setOpenIndex(openIndex === index ? null : index)}
-              className="w-full px-6 py-6 flex justify-between items-center text-left focus:outline-none"
+              className="w-full py-6 flex justify-between items-center text-left focus:outline-none group"
             >
-              <h3 className="text-xl md:text-2xl font-bold uppercase">{faq.question}</h3>
-              {openIndex === index ? (
-                <ChevronUp className="w-8 h-8 flex-shrink-0" />
-              ) : (
-                <ChevronDown className="w-8 h-8 flex-shrink-0" />
-              )}
+              <h3 className="font-sans text-sm tracking-wide text-foreground group-hover:text-primary transition-colors">{faq.question}</h3>
+              <span className="text-foreground/50 transition-transform duration-300">
+                {openIndex === index ? (
+                  <ChevronUp className="w-5 h-5" strokeWidth={1.5} />
+                ) : (
+                  <ChevronDown className="w-5 h-5" strokeWidth={1.5} />
+                )}
+              </span>
             </button>
             
-            {openIndex === index && (
-              <div className="px-6 pb-6 border-t-4 border-foreground pt-4 bg-secondary/10">
-                <p className="text-lg font-medium">
-                  {faq.answer}
-                </p>
-              </div>
-            )}
+            <div 
+              className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                openIndex === index ? 'max-h-40 pb-6 opacity-100' : 'max-h-0 opacity-0'
+              }`}
+            >
+              <p className="font-sans text-sm tracking-wide leading-relaxed text-foreground/70 pr-12">
+                {faq.answer}
+              </p>
+            </div>
           </div>
         ))}
       </div>
       
-      <div className="mt-16 p-8 border-4 border-foreground bg-primary text-background text-center">
-        <h2 className="text-3xl font-bold uppercase mb-4">Still have questions?</h2>
-        <p className="text-xl font-medium mb-6">Our bold support team is here to help.</p>
+      <div className="mt-32 text-center">
+        <p className="font-sans text-xs tracking-widest uppercase text-foreground/50 mb-6">Still have questions?</p>
         <a 
           href="/contact" 
-          className="inline-block bg-background text-foreground border-4 border-foreground font-bold uppercase px-8 py-4 hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(17,17,17,1)] transition-all"
+          className="inline-block border-b border-foreground text-foreground font-sans text-sm tracking-wide pb-1 hover:text-primary hover:border-primary transition-colors"
         >
-          Contact Us
+          Contact our bold support team
         </a>
       </div>
     </div>

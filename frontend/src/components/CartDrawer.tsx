@@ -14,65 +14,65 @@ export function CartDrawer() {
       />
       
       {/* Drawer */}
-      <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-background border-l-8 border-foreground z-[70] shadow-[-16px_0px_0px_0px_rgba(17,17,17,1)] flex flex-col transform transition-transform duration-300 ease-in-out ${isCartOpen ? 'translate-x-0' : 'translate-x-[120%]'}`}>
-        <div className="flex items-center justify-between p-6 border-b-4 border-foreground bg-primary text-foreground">
-          <h2 className="text-3xl font-display font-bold uppercase tracking-tight">Your Cart</h2>
+      <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-background border-l border-foreground/10 z-[70] shadow-2xl flex flex-col transform transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isCartOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="flex items-center justify-between p-8 border-b border-foreground/10">
+          <h2 className="text-2xl font-display tracking-wide">Your Bag</h2>
           <button 
             onClick={closeCart}
-            className="p-2 border-2 border-transparent hover:border-foreground transition-colors hover:bg-foreground hover:text-background"
+            className="p-2 text-foreground/50 hover:text-foreground transition-colors"
           >
-            <X className="w-8 h-8" />
+            <X className="w-6 h-6" strokeWidth={1.5} />
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-8 space-y-8">
           {cartItems.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-xl font-medium mb-6 uppercase">Your cart is empty.</p>
+            <div className="text-center py-20">
+              <p className="font-sans text-sm tracking-widest uppercase text-foreground/50 mb-8">Your bag is empty</p>
               <button 
                 onClick={closeCart}
-                className="bg-foreground text-background font-bold py-3 px-8 border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(255,0,127,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all uppercase"
+                className="bg-foreground text-background font-sans text-xs tracking-widest uppercase py-4 px-10 hover:bg-primary transition-colors"
               >
                 Keep Shopping
               </button>
             </div>
           ) : (
             cartItems.map((item) => (
-              <div key={item._id + item.size} className="flex gap-4 border-2 border-foreground p-3 bg-secondary">
-                <div className="w-24 h-32 border-2 border-foreground bg-background overflow-hidden flex-shrink-0">
-                  <img src={item.image} alt={item.name} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all" />
+              <div key={item._id + item.size} className="flex gap-6 border-b border-foreground/10 pb-6 last:border-0 last:pb-0">
+                <div className="w-24 h-32 bg-muted/20 overflow-hidden flex-shrink-0">
+                  <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex flex-col justify-between flex-1">
                   <div>
-                    <h3 className="font-bold uppercase text-lg leading-tight mb-1">
+                    <h3 className="font-sans text-sm tracking-wide mb-1">
                       <Link to={`/product/${item._id}`} onClick={closeCart} className="hover:text-primary transition-colors">
                         {item.name}
                       </Link>
                     </h3>
-                    <p className="font-medium">Size: <span className="font-bold">{item.size}</span></p>
-                    <p className="font-display font-bold text-lg mt-1 text-primary">₹{item.price}</p>
+                    <p className="font-sans text-xs text-foreground/50 tracking-wide">Size: {item.size}</p>
+                    <p className="font-sans text-sm text-foreground/80 mt-2">₹{item.price}</p>
                   </div>
                   <div className="flex items-center justify-between mt-4">
-                    <div className="flex items-center border-2 border-foreground bg-background">
+                    <div className="flex items-center border border-foreground/20">
                       <button 
                         onClick={() => updateQuantity(item._id, item.size, item.qty - 1)}
-                        className="px-2 py-1 hover:bg-foreground hover:text-background transition-colors"
+                        className="px-3 py-1 text-foreground/50 hover:text-foreground transition-colors"
                       >
-                        <Minus className="w-4 h-4" />
+                        <Minus className="w-3 h-3" />
                       </button>
-                      <span className="font-bold px-3 py-1 border-x-2 border-foreground">{item.qty}</span>
+                      <span className="font-sans text-xs tracking-widest px-3">{item.qty}</span>
                       <button 
                         onClick={() => updateQuantity(item._id, item.size, item.qty + 1)}
-                        className="px-2 py-1 hover:bg-foreground hover:text-background transition-colors"
+                        className="px-3 py-1 text-foreground/50 hover:text-foreground transition-colors"
                       >
-                        <Plus className="w-4 h-4" />
+                        <Plus className="w-3 h-3" />
                       </button>
                     </div>
                     <button 
                       onClick={() => removeFromCart(item._id, item.size)}
-                      className="p-2 text-foreground hover:text-primary hover:bg-foreground/10 transition-colors"
+                      className="text-foreground/40 hover:text-primary transition-colors"
                     >
-                      <Trash2 className="w-5 h-5" />
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -83,10 +83,10 @@ export function CartDrawer() {
 
         {cartItems.length > 0 && (
           /* Footer */
-          <div className="border-t-4 border-foreground p-6 bg-secondary">
-            <div className="flex justify-between items-center mb-6">
-              <span className="text-xl font-bold uppercase">Total</span>
-              <span className="text-2xl font-black">₹{cartTotal.toFixed(2)}</span>
+          <div className="border-t border-foreground/10 p-8 bg-background/50 backdrop-blur-md">
+            <div className="flex justify-between items-center mb-6 font-sans">
+              <span className="text-sm tracking-widest uppercase text-foreground/70">Subtotal</span>
+              <span className="text-lg tracking-wide text-foreground">₹{cartTotal.toFixed(2)}</span>
             </div>
             
             <button
@@ -95,14 +95,17 @@ export function CartDrawer() {
                 window.location.href = '/shipping';
               }}
               disabled={cartItems.length === 0}
-              className={`w-full py-4 border-4 border-foreground font-black uppercase tracking-widest transition-all ${
+              className={`w-full py-4 font-sans text-xs tracking-widest uppercase transition-colors ${
                 cartItems.length === 0 
-                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-primary text-background hover:bg-foreground hover:text-background'
+                  ? 'bg-muted text-foreground/30 cursor-not-allowed'
+                  : 'bg-foreground text-background hover:bg-primary'
               }`}
             >
               Checkout
             </button>
+            <p className="text-center font-sans text-[10px] tracking-widest uppercase text-foreground/40 mt-4">
+              Shipping & taxes calculated at checkout
+            </p>
           </div>
         )}
       </div>

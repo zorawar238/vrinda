@@ -48,4 +48,16 @@ router.post('/', protect, admin, upload.single('image'), (req: Request, res: Res
   }
 });
 
+router.post('/multiple', protect, admin, upload.array('images', 10), (req: Request, res: Response) => {
+  if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+    const images = req.files.map((file) => `/${file.path.replace(/\\/g, '/')}`);
+    res.send({
+      message: 'Images Uploaded',
+      images,
+    });
+  } else {
+    res.status(400).send({ message: 'No images provided' });
+  }
+});
+
 export default router;

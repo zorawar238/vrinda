@@ -13,6 +13,7 @@ interface Product {
   price: number;
   description: string;
   image: string;
+  images?: string[];
   sizes: string[];
   rating: number;
   numReviews: number;
@@ -26,6 +27,7 @@ export function ProductDetail() {
   const { userInfo } = useAuth();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [product, setProduct] = useState<Product | null>(null);
+  const [mainImage, setMainImage] = useState<string | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -42,6 +44,7 @@ export function ProductDetail() {
         if (!response.ok) throw new Error('Product not found');
         const data = await response.json();
         setProduct(data);
+        setMainImage(data.image);
 
         // Fetch related products
         try {
@@ -138,54 +141,72 @@ export function ProductDetail() {
   if (error || !product) return <div className="max-w-7xl mx-auto px-6 py-20"><h2 className="text-4xl font-bold text-red-500">ERROR: {error}</h2><Link to="/shop" className="underline mt-4 block">Return to Shop</Link></div>;
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12 lg:py-20">
-      <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
+    <div className="max-w-7xl mx-auto px-6 py-12 lg:py-24 animate-fade-in">
+      <div className="grid md:grid-cols-2 gap-12 lg:gap-24">
         {/* Images */}
-        <div className="space-y-6">
-          <div className="aspect-[3/4] border-4 border-foreground bg-foreground shadow-[12px_12px_0px_0px_rgba(17,17,17,1)] overflow-hidden">
-            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+        <div className="space-y-4">
+          <div className="aspect-[3/4] bg-muted/20 overflow-hidden w-full border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(17,17,17,1)]">
+            <img src={mainImage || product.image} alt={product.name} className="w-full h-full object-cover" />
           </div>
-          <div className="grid grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map(i => (
-              <div key={i} className="aspect-square border-2 border-foreground cursor-pointer hover:opacity-80 transition-opacity">
-                 <img src={product.image} alt="Thumbnail" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all" />
+          
+          {/* Thumbnails */}
+          {product.images && product.images.length > 0 && (
+            <div className="grid grid-cols-4 gap-4 mt-4">
+              {/* Primary Image Thumbnail */}
+              <div 
+                className={`aspect-[3/4] bg-muted/20 cursor-pointer overflow-hidden border-2 transition-all ${mainImage === product.image ? 'border-primary' : 'border-foreground hover:opacity-80'}`}
+                onClick={() => setMainImage(product.image)}
+              >
+                 <img src={product.image} alt="Thumbnail Primary" className="w-full h-full object-cover" />
               </div>
-            ))}
-          </div>
+              
+              {/* Additional Images Thumbnails */}
+              {product.images.map((img, idx) => (
+                <div 
+                  key={idx} 
+                  className={`aspect-[3/4] bg-muted/20 cursor-pointer overflow-hidden border-2 transition-all ${mainImage === img ? 'border-primary' : 'border-foreground hover:opacity-80'}`}
+                  onClick={() => setMainImage(img)}
+                >
+                   <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Details */}
         <div className="flex flex-col justify-center">
-          <div className="mb-8 border-b-4 border-foreground pb-8">
-            <h1 className="text-5xl lg:text-7xl font-display font-bold uppercase tracking-tighter mb-4">
+          <div className="mb-10">
+            <h1 className="text-4xl lg:text-5xl font-display tracking-wide mb-4 text-foreground leading-snug">
               {product.name}
             </h1>
             <div className="flex items-center gap-4 mb-4">
-              <Rating value={product.rating} text={`${product.numReviews} reviews`} color="#ff4d00" />
+              <Rating value={product.rating} text={`${product.numReviews} reviews`} />
             </div>
-            <p className="text-4xl font-bold text-primary">₹{product.price.toLocaleString('en-IN')}</p>
+            <p className="text-2xl font-sans text-foreground/80">₹{product.price.toLocaleString('en-IN')}</p>
           </div>
           
-          <div className="mb-8">
-            <p className="text-xl font-medium leading-relaxed max-w-prose">
+          <div className="mb-10">
+            <p className="text-sm font-sans tracking-wide leading-relaxed text-foreground/70 max-w-prose">
+              <strong className="block font-display italic text-lg text-foreground mb-2">The Story</strong>
               {product.description}
             </p>
           </div>
 
           <div className="mb-10">
             <div className="flex justify-between items-end mb-4">
-              <h3 className="font-display font-bold text-2xl uppercase">Size</h3>
-              <button className="underline font-bold uppercase text-sm hover:text-primary transition-colors">Size Guide</button>
+              <h3 className="font-sans text-xs tracking-widest uppercase text-foreground/70">Size</h3>
+              <button className="underline font-sans text-xs tracking-widest uppercase text-foreground/70 hover:text-foreground transition-colors">Size Guide</button>
             </div>
             <div className="grid grid-cols-5 gap-3">
               {product.sizes.map(s => (
                 <button 
                   key={s}
                   onClick={() => setSelectedSize(s)}
-                  className={`py-3 border-2 border-foreground font-bold text-lg uppercase transition-all ${
+                  className={`py-3 border font-sans text-sm tracking-widest uppercase transition-colors ${
                     selectedSize === s 
-                    ? 'bg-foreground text-background shadow-[4px_4px_0px_0px_rgba(255,0,127,1)]' 
-                    : 'bg-background text-foreground hover:bg-secondary shadow-[4px_4px_0px_0px_rgba(17,17,17,1)] hover:translate-x-[-2px] hover:translate-y-[-2px]'
+                    ? 'border-foreground bg-foreground text-background' 
+                    : 'border-foreground/20 bg-transparent text-foreground hover:border-foreground'
                   }`}
                 >
                   {s}
@@ -197,26 +218,26 @@ export function ProductDetail() {
           <div className="flex gap-4">
             <button 
               onClick={handleAddToCart}
-              className="flex-grow bg-primary text-background font-display font-bold text-3xl py-6 border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(17,17,17,1)] hover:-translate-y-2 hover:shadow-[12px_12px_0px_0px_rgba(17,17,17,1)] transition-all uppercase tracking-wide"
+              className="flex-grow bg-foreground text-background font-sans text-xs tracking-widest uppercase py-4 hover:bg-primary transition-colors"
             >
-              Add to Cart
+              Add to Bag
             </button>
             <button
               onClick={handleToggleWishlist}
-              className={`px-8 border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(17,17,17,1)] hover:-translate-y-2 hover:shadow-[12px_12px_0px_0px_rgba(17,17,17,1)] transition-all flex items-center justify-center ${inWishlist ? 'bg-primary text-background' : 'bg-background text-foreground hover:bg-secondary'}`}
+              className={`px-6 border transition-colors flex items-center justify-center ${inWishlist ? 'border-primary text-primary bg-primary/5' : 'border-foreground/20 text-foreground hover:border-foreground'}`}
               title="Toggle Wishlist"
             >
-              <Heart className={`w-8 h-8 ${inWishlist ? 'fill-current' : ''}`} />
+              <Heart className={`w-5 h-5 ${inWishlist ? 'fill-current' : ''}`} />
             </button>
           </div>
           
-          <div className="mt-8 grid grid-cols-2 gap-4 border-t-4 border-foreground pt-8 font-bold uppercase">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-secondary border-2 border-foreground rounded-full"></div>
+          <div className="mt-12 grid grid-cols-2 gap-4 border-t border-foreground/10 pt-8 font-sans text-xs tracking-widest uppercase text-foreground/60">
+            <div className="flex items-center gap-3">
+              <div className="w-1.5 h-1.5 bg-foreground/20 rounded-full"></div>
               <span>Free Shipping</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-primary border-2 border-foreground rounded-full"></div>
+            <div className="flex items-center gap-3">
+              <div className="w-1.5 h-1.5 bg-foreground/20 rounded-full"></div>
               <span>7 Day Returns</span>
             </div>
           </div>
@@ -225,9 +246,9 @@ export function ProductDetail() {
 
       {/* Related Products Section */}
       {relatedProducts.length > 0 && (
-        <div className="mt-20 border-t-4 border-foreground pt-12">
-          <h2 className="text-4xl font-display font-bold uppercase tracking-tighter mb-12">You Might Also Like</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="mt-24 border-t border-foreground/10 pt-16">
+          <h2 className="text-3xl font-display tracking-wide mb-12 text-center">You Might Also Like</h2>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedProducts.map(rp => (
               <ProductCard
                 key={rp._id}
@@ -243,27 +264,27 @@ export function ProductDetail() {
       )}
 
       {/* Reviews Section */}
-      <div className="mt-20 border-t-4 border-foreground pt-12">
-        <h2 className="text-4xl font-display font-bold uppercase tracking-tighter mb-12">Reviews & Ratings</h2>
-        <div className="grid md:grid-cols-2 gap-12">
+      <div className="mt-24 border-t border-foreground/10 pt-16">
+        <h2 className="text-3xl font-display tracking-wide mb-12 text-center">Reviews & Ratings</h2>
+        <div className="grid md:grid-cols-2 gap-16 max-w-5xl mx-auto">
           
           {/* Reviews List */}
           <div>
-            <h3 className="text-2xl font-bold uppercase mb-6">Customer Reviews</h3>
+            <h3 className="text-sm font-sans tracking-widest uppercase text-foreground/50 mb-8">Customer Reviews</h3>
             {product.reviews.length === 0 ? (
-              <div className="bg-secondary text-foreground p-6 font-bold uppercase border-4 border-foreground">
+              <div className="bg-muted/10 text-foreground/60 p-6 text-sm tracking-wide text-center">
                 No reviews yet. Be the first to review!
               </div>
             ) : (
-              <div className="space-y-6">
+              <div className="space-y-8">
                 {product.reviews.map((review) => (
-                  <div key={review._id} className="border-4 border-foreground p-6 bg-background shadow-[4px_4px_0px_0px_rgba(17,17,17,1)]">
-                    <div className="flex justify-between items-center mb-4">
-                      <strong className="font-bold uppercase text-xl">{review.name}</strong>
+                  <div key={review._id} className="border-b border-foreground/10 pb-6">
+                    <div className="flex justify-between items-center mb-3">
+                      <strong className="font-sans text-sm tracking-wide">{review.name}</strong>
                       <Rating value={review.rating} />
                     </div>
-                    <p className="text-foreground/80 font-medium">{review.createdAt.substring(0, 10)}</p>
-                    <p className="mt-4 font-bold">{review.comment}</p>
+                    <p className="text-xs text-foreground/40 mb-3">{review.createdAt.substring(0, 10)}</p>
+                    <p className="text-sm text-foreground/80 leading-relaxed">{review.comment}</p>
                   </div>
                 ))}
               </div>
@@ -272,25 +293,25 @@ export function ProductDetail() {
 
           {/* Write a Review */}
           <div>
-            <h3 className="text-2xl font-bold uppercase mb-6">Write a Review</h3>
+            <h3 className="text-sm font-sans tracking-widest uppercase text-foreground/50 mb-8">Write a Review</h3>
             {userInfo ? (
-              <form onSubmit={submitReviewHandler} className="border-4 border-foreground p-8 bg-background shadow-brutal">
+              <form onSubmit={submitReviewHandler} className="space-y-6">
                 {reviewSuccess && (
-                  <div className="bg-primary text-background p-4 mb-6 font-bold uppercase border-4 border-foreground">
+                  <div className="bg-primary/10 text-primary p-4 text-sm tracking-wide text-center">
                     Review submitted successfully!
                   </div>
                 )}
                 {reviewError && (
-                  <div className="bg-red-500 text-white p-4 mb-6 font-bold uppercase border-4 border-foreground">
+                  <div className="bg-red-500/10 text-red-500 p-4 text-sm tracking-wide text-center">
                     {reviewError}
                   </div>
                 )}
-                <div className="mb-6">
-                  <label className="block font-bold uppercase mb-2">Rating</label>
+                <div>
+                  <label className="block text-xs font-sans tracking-widest uppercase text-foreground/70 mb-2">Rating</label>
                   <select
                     value={rating}
                     onChange={(e) => setRating(Number(e.target.value))}
-                    className="w-full border-4 border-foreground p-4 bg-secondary font-bold uppercase focus:outline-none focus:bg-background transition-colors appearance-none"
+                    className="w-full border-b border-foreground/30 py-3 bg-transparent text-sm focus:outline-none focus:border-foreground transition-colors appearance-none"
                     required
                   >
                     <option value="5">5 - Excellent</option>
@@ -300,28 +321,28 @@ export function ProductDetail() {
                     <option value="1">1 - Poor</option>
                   </select>
                 </div>
-                <div className="mb-6">
-                  <label className="block font-bold uppercase mb-2">Comment</label>
+                <div>
+                  <label className="block text-xs font-sans tracking-widest uppercase text-foreground/70 mb-2">Comment</label>
                   <textarea
                     rows={4}
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
-                    className="w-full border-4 border-foreground p-4 bg-secondary font-bold focus:outline-none focus:bg-background transition-colors"
-                    placeholder="WRITE YOUR REVIEW HERE..."
+                    className="w-full border border-foreground/30 p-4 bg-transparent text-sm focus:outline-none focus:border-foreground transition-colors resize-none"
+                    placeholder="Write your review here..."
                     required
                   ></textarea>
                 </div>
                 <button
                   type="submit"
                   disabled={reviewLoading}
-                  className="w-full bg-primary text-background font-bold text-xl py-4 border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(17,17,17,1)] hover:-translate-y-1 hover:shadow-[10px_10px_0px_0px_rgba(17,17,17,1)] transition-all uppercase disabled:opacity-50"
+                  className="w-full bg-foreground text-background font-sans text-xs tracking-widest uppercase py-4 hover:bg-primary transition-colors disabled:opacity-50"
                 >
                   {reviewLoading ? 'Submitting...' : 'Submit Review'}
                 </button>
               </form>
             ) : (
-              <div className="bg-secondary text-foreground p-6 font-bold uppercase border-4 border-foreground">
-                Please <Link to="/login" className="text-primary hover:underline">sign in</Link> to write a review.
+              <div className="bg-muted/10 text-foreground/60 p-6 text-sm tracking-wide text-center">
+                Please <Link to="/login" className="text-foreground hover:text-primary transition-colors underline">sign in</Link> to write a review.
               </div>
             )}
           </div>

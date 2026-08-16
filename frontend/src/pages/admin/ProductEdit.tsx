@@ -8,6 +8,7 @@ export function ProductEdit() {
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState('');
+  const [images, setImages] = useState<string[]>([]);
   const [category, setCategory] = useState('');
   const [stock, setStock] = useState(0);
   const [description, setDescription] = useState('');
@@ -39,6 +40,7 @@ export function ProductEdit() {
         setName(data.name);
         setPrice(data.price);
         setImage(data.image);
+        setImages(data.images || []);
         setCategory(data.category);
         setStock(data.stock);
         setDescription(data.description);
@@ -80,6 +82,36 @@ export function ProductEdit() {
     }
   };
 
+  const uploadMultipleFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const formData = new FormData();
+    Array.from(files).forEach((file) => formData.append('images', file));
+    setUploading(true);
+
+    try {
+      const res = await fetch('/api/upload/multiple', {
+        method: 'POST',
+        credentials: 'include',
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Image upload failed');
+      
+      setImages((prev) => [...prev, ...data.images]);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const removeImage = (indexToRemove: number) => {
+    setImages(images.filter((_, idx) => idx !== indexToRemove));
+  };
+
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     setUpdateLoading(true);
@@ -93,7 +125,7 @@ export function ProductEdit() {
         },
         credentials: 'include',
         body: JSON.stringify({
-          name, price, image, category, stock, description, isTrending, sizes
+          name, price, image, images, category, stock, description, isTrending, sizes
         }),
       });
 
@@ -184,6 +216,37 @@ export function ProductEdit() {
                 hover:file:bg-primary/80"
             />
             {uploading && <div className="mt-2 text-sm font-bold uppercase text-primary">Uploading image...</div>}
+          </div>
+
+          <div>
+            <label className="block font-bold uppercase mb-2">Additional Images</label>
+            {images.length > 0 && (
+              <div className="flex gap-4 mb-4 overflow-x-auto pb-2">
+                {images.map((img, idx) => (
+                  <div key={idx} className="relative w-24 h-24 flex-shrink-0 border-2 border-foreground group">
+                    <img src={img} alt={`Preview ${idx}`} className="w-full h-full object-cover" />
+                    <button 
+                      type="button" 
+                      onClick={() => removeImage(idx)}
+                      className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-none hover:bg-foreground transition-colors opacity-0 group-hover:opacity-100"
+                    >
+                      X
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            <input 
+              type="file"
+              multiple
+              onChange={uploadMultipleFileHandler}
+              className="block w-full text-sm text-gray-500
+                file:mr-4 file:py-2 file:px-4
+                file:border-0
+                file:text-sm file:font-semibold
+                file:bg-primary file:text-background
+                hover:file:bg-primary/80"
+            />
           </div>
 
           <div>

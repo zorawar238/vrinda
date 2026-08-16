@@ -78,22 +78,25 @@ export function Shop() {
   }, [searchKeyword, selectedCategory, sortOption]);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
-      <div className="flex flex-col md:flex-row justify-between items-end mb-8 border-b-4 border-foreground pb-4 gap-4">
-        <h1 className="text-6xl md:text-8xl font-display font-bold uppercase tracking-tighter">
-          All <span className="text-primary">Products</span>
-        </h1>
-        <div className="flex gap-4 font-bold uppercase">
+    <div className="max-w-7xl mx-auto px-6 py-12 lg:py-24 animate-fade-in">
+      <div className="flex flex-col md:flex-row justify-between items-end mb-8 border-b border-foreground/10 pb-6 gap-4">
+        <div>
+          <h1 className="text-4xl md:text-5xl font-display tracking-tight text-foreground">
+            All Products
+          </h1>
+          <p className="text-foreground/50 mt-2 font-sans text-sm tracking-wide">The entire collection.</p>
+        </div>
+        <div className="flex gap-4 font-sans text-xs tracking-widest uppercase text-foreground/70">
           <button 
             onClick={() => setShowFilters(!showFilters)}
-            className="border-2 border-foreground px-4 py-2 hover:bg-foreground hover:text-background transition-colors shadow-brutal flex items-center gap-2"
+            className="border-b border-foreground/30 px-2 py-1 hover:border-foreground hover:text-foreground transition-colors flex items-center gap-2"
           >
             Filter {showFilters ? '▲' : '▼'}
           </button>
           <select 
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
-            className="border-2 border-foreground px-4 py-2 bg-transparent outline-none cursor-pointer shadow-brutal"
+            className="border-b border-foreground/30 px-2 py-1 bg-transparent outline-none cursor-pointer hover:border-foreground hover:text-foreground transition-colors appearance-none text-right"
           >
             <option value="">Sort: Featured</option>
             <option value="priceAsc">Price: Low to High</option>
@@ -103,24 +106,24 @@ export function Shop() {
       </div>
 
       {showFilters && (
-        <div className="mb-12 bg-secondary border-4 border-foreground p-6 shadow-brutal animate-fade-in-down">
-          <div className="grid md:grid-cols-2 gap-8">
+        <div className="mb-12 bg-muted/10 border border-foreground/10 p-8 animate-fade-in-down">
+          <div className="grid md:grid-cols-2 gap-12">
             <div>
-              <label className="block font-bold uppercase mb-2">Search Products</label>
+              <label className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-3">Search Products</label>
               <input 
                 type="text" 
                 placeholder="Search by name..." 
                 value={searchKeyword}
                 onChange={(e) => setSearchKeyword(e.target.value)}
-                className="w-full bg-background border-4 border-foreground p-3 outline-none focus:border-primary transition-colors font-bold"
+                className="w-full bg-transparent border-b border-foreground/30 py-2 outline-none focus:border-foreground transition-colors text-sm tracking-wide"
               />
             </div>
             <div>
-              <label className="block font-bold uppercase mb-2">Categories</label>
-              <div className="flex flex-wrap gap-2">
+              <label className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-3">Categories</label>
+              <div className="flex flex-wrap gap-3">
                 <button 
                   onClick={() => setSelectedCategory('')}
-                  className={`px-4 py-2 border-2 border-foreground font-bold uppercase transition-colors ${selectedCategory === '' ? 'bg-foreground text-background' : 'bg-background hover:bg-secondary'}`}
+                  className={`px-5 py-2 border font-sans text-xs tracking-widest uppercase transition-colors ${selectedCategory === '' ? 'border-foreground bg-foreground text-background' : 'border-foreground/20 bg-transparent hover:border-foreground'}`}
                 >
                   All
                 </button>
@@ -128,7 +131,7 @@ export function Shop() {
                   <button 
                     key={cat}
                     onClick={() => setSelectedCategory(cat)}
-                    className={`px-4 py-2 border-2 border-foreground font-bold uppercase transition-colors ${selectedCategory === cat ? 'bg-foreground text-background' : 'bg-background hover:bg-secondary'}`}
+                    className={`px-5 py-2 border font-sans text-xs tracking-widest uppercase transition-colors ${selectedCategory === cat ? 'border-foreground bg-foreground text-background' : 'border-foreground/20 bg-transparent hover:border-foreground'}`}
                   >
                     {cat}
                   </button>
@@ -139,41 +142,41 @@ export function Shop() {
         </div>
       )}
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12">
         {loading ? (
-          <h2 className="text-2xl font-bold col-span-full">LOADING CATALOG...</h2>
+          <div className="col-span-full py-8 text-center text-sm tracking-widest text-foreground/50 uppercase">Loading Catalog...</div>
         ) : error ? (
-          <h2 className="text-2xl font-bold text-red-500 col-span-full">DATABASE CONNECTION FAILED: {error}</h2>
+          <div className="col-span-full py-8 text-center text-sm tracking-widest text-red-500 uppercase">Database connection failed: {error}</div>
         ) : products.length === 0 ? (
-          <h2 className="text-2xl font-bold col-span-full">NO PRODUCTS FOUND.</h2>
+          <div className="col-span-full py-8 text-center text-sm tracking-widest text-foreground/50 uppercase">No products found.</div>
         ) : (
           products.map((p) => (
-            <div key={p._id} className="group border-4 border-foreground bg-background shadow-[6px_6px_0px_0px_rgba(17,17,17,1)] hover:-translate-y-2 hover:shadow-[10px_10px_0px_0px_rgba(17,17,17,1)] transition-all flex flex-col">
-              <Link to={`/product/${p._id}`} className="relative aspect-[3/4] border-b-4 border-foreground bg-foreground overflow-hidden block">
+            <div key={p._id} className="group flex flex-col">
+              <Link to={`/product/${p._id}`} className="relative aspect-[3/4] bg-muted/20 overflow-hidden mb-4 block">
                 {p.isTrending && (
-                  <div className="absolute top-4 left-4 z-10 bg-secondary text-foreground font-bold px-3 py-1 border-2 border-foreground uppercase">
-                    HOT
+                  <div className="absolute top-3 left-3 z-10 bg-primary/90 backdrop-blur-sm text-background text-[10px] tracking-widest uppercase px-2 py-1 rounded-full">
+                    Trending
                   </div>
                 )}
-                <img src={p.image} alt={p.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" />
-              </Link>
-              <div className="p-4 flex-1 flex flex-col justify-between bg-background z-10">
-                <div>
-                  <Link to={`/product/${p._id}`} className="hover:text-primary transition-colors">
-                    <h3 className="font-bold text-xl uppercase leading-tight mb-2">{p.name}</h3>
-                  </Link>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Rating value={p.rating || 0} />
-                    <span className="text-sm font-bold opacity-70">({p.numReviews || 0})</span>
-                  </div>
-                  <p className="font-display font-bold text-2xl">₹{p.price}</p>
-                </div>
-                <div className="mt-6 flex gap-2">
-                  <Link to={`/product/${p._id}`} className="flex-grow text-center block bg-primary text-background font-bold py-3 border-2 border-foreground hover:bg-foreground hover:text-background transition-colors uppercase relative overflow-hidden group/btn">
-                    <span className="relative z-10">View Details</span>
-                    <div className="absolute inset-0 bg-foreground scale-x-0 group-hover/btn:scale-x-100 origin-left transition-transform duration-300"></div>
-                  </Link>
+                <img 
+                  src={p.image} 
+                  alt={p.name} 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                />
+                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <WishlistButton product={p} />
+                </div>
+              </Link>
+              <div className="flex flex-col justify-between flex-1">
+                <Link to={`/product/${p._id}`} className="hover:text-primary transition-colors">
+                  <h3 className="font-sans text-sm tracking-wide text-foreground mb-1">{p.name}</h3>
+                </Link>
+                <div className="flex items-center justify-between mt-1">
+                  <p className="font-sans text-sm text-foreground/70">₹{p.price}</p>
+                  <div className="flex items-center gap-1">
+                    <Rating value={p.rating || 0} />
+                    <span className="text-xs text-foreground/40">({p.numReviews || 0})</span>
+                  </div>
                 </div>
               </div>
             </div>

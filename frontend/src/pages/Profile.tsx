@@ -111,94 +111,94 @@ export function Profile() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-        <div className="md:col-span-1">
-          <h2 className="text-3xl font-black uppercase tracking-tight mb-6 border-b-4 border-foreground pb-2">User Profile</h2>
+    <div className="max-w-7xl mx-auto py-12 lg:py-24 px-6 animate-fade-in">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-16">
+        <div className="lg:col-span-1">
+          <h2 className="text-sm font-sans tracking-widest uppercase text-foreground/50 mb-8 border-b border-foreground/10 pb-2">Profile</h2>
           
           {editMode ? (
-            <form onSubmit={updateProfileHandler} className="bg-secondary border-4 border-foreground p-6 shadow-brutal">
-              {updateError && <div className="mb-4 p-3 bg-red-100 text-red-700 border-2 border-red-700 font-bold uppercase">{updateError}</div>}
-              {updateSuccess && <div className="mb-4 p-3 bg-green-100 text-green-700 border-2 border-green-700 font-bold uppercase">Profile Updated!</div>}
+            <form onSubmit={updateProfileHandler} className="border border-foreground/10 bg-background/50 p-8 space-y-6">
+              {updateError && <div className="p-4 bg-red-500/10 text-red-500 text-sm tracking-wide text-center">{updateError}</div>}
+              {updateSuccess && <div className="p-4 bg-primary/10 text-primary text-sm tracking-wide text-center">Profile Updated!</div>}
               
-              <div className="mb-4">
-                <label className="block text-sm font-bold uppercase text-gray-500 mb-1">Name</label>
+              <div>
+                <label className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-3">Name</label>
                 <input 
                   type="text" 
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-background border-2 border-foreground p-2 font-bold outline-none focus:border-primary"
+                  className="w-full border-b border-foreground/30 py-2 bg-transparent text-sm focus:outline-none focus:border-foreground transition-colors"
                   required
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-sm font-bold uppercase text-gray-500 mb-1">Email</label>
+              <div>
+                <label className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-3">Email</label>
                 <input 
                   type="email" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-background border-2 border-foreground p-2 font-bold outline-none focus:border-primary"
+                  className="w-full border-b border-foreground/30 py-2 bg-transparent text-sm focus:outline-none focus:border-foreground transition-colors"
                   required
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-sm font-bold uppercase text-gray-500 mb-1">New Password</label>
+              <div>
+                <label className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-3">New Password</label>
                 <input 
                   type="password" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Leave blank to keep current"
-                  className="w-full bg-background border-2 border-foreground p-2 font-bold outline-none focus:border-primary placeholder:text-gray-400 placeholder:font-normal"
+                  className="w-full border-b border-foreground/30 py-2 bg-transparent text-sm focus:outline-none focus:border-foreground transition-colors placeholder-foreground/20"
                 />
               </div>
-              <div className="mb-6">
-                <label className="block text-sm font-bold uppercase text-gray-500 mb-1">Confirm New Password</label>
+              <div>
+                <label className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-3">Confirm Password</label>
                 <input 
                   type="password" 
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full bg-background border-2 border-foreground p-2 font-bold outline-none focus:border-primary"
+                  className="w-full border-b border-foreground/30 py-2 bg-transparent text-sm focus:outline-none focus:border-foreground transition-colors"
                 />
               </div>
               
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-4 pt-4">
                 <button
                   type="submit"
                   disabled={updateLoading}
-                  className="w-full bg-primary text-background font-black uppercase py-3 border-4 border-foreground hover:bg-foreground hover:text-background transition-all disabled:opacity-50"
+                  className="w-full bg-foreground text-background font-sans text-xs tracking-widest uppercase py-3 hover:bg-primary transition-colors disabled:opacity-50"
                 >
                   {updateLoading ? 'Updating...' : 'Save Changes'}
                 </button>
                 <button
                   type="button"
                   onClick={() => setEditMode(false)}
-                  className="w-full bg-background text-foreground font-black uppercase py-3 border-4 border-foreground hover:bg-secondary transition-all"
+                  className="w-full bg-transparent text-foreground font-sans text-xs tracking-widest uppercase py-3 border border-foreground/30 hover:border-foreground transition-colors"
                 >
                   Cancel
                 </button>
               </div>
             </form>
           ) : (
-            <div className="bg-secondary border-4 border-foreground p-6 shadow-brutal">
-              <div className="mb-4">
-                <span className="block text-sm font-bold uppercase text-gray-500">Name</span>
-                <span className="text-xl font-bold">{userInfo?.name}</span>
+            <div className="border border-foreground/10 bg-background/50 p-8 space-y-8">
+              <div>
+                <span className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-1">Name</span>
+                <span className="font-sans text-sm tracking-wide text-foreground">{userInfo?.name}</span>
               </div>
-              <div className="mb-8">
-                <span className="block text-sm font-bold uppercase text-gray-500">Email</span>
-                <span className="text-xl font-bold break-all">{userInfo?.email}</span>
+              <div>
+                <span className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-1">Email</span>
+                <span className="font-sans text-sm tracking-wide text-foreground break-all">{userInfo?.email}</span>
               </div>
               
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-4 pt-4">
                 <button
                   onClick={() => setEditMode(true)}
-                  className="w-full bg-primary text-background font-black uppercase py-3 border-4 border-foreground hover:bg-foreground hover:text-background transition-all"
+                  className="w-full bg-foreground text-background font-sans text-xs tracking-widest uppercase py-3 hover:bg-primary transition-colors"
                 >
                   Edit Profile
                 </button>
                 <button
                   onClick={handleLogout}
-                  className="w-full bg-foreground text-background font-black uppercase py-3 border-4 border-foreground hover:bg-background hover:text-foreground transition-all"
+                  className="w-full bg-transparent text-foreground/70 font-sans text-xs tracking-widest uppercase py-3 hover:text-foreground transition-colors"
                 >
                   Logout
                 </button>
@@ -207,43 +207,50 @@ export function Profile() {
           )}
         </div>
         
-        <div className="md:col-span-3">
-          <h2 className="text-3xl font-black uppercase tracking-tight mb-6 border-b-4 border-foreground pb-2">My Orders</h2>
+        <div className="lg:col-span-3">
+          <h2 className="text-sm font-sans tracking-widest uppercase text-foreground/50 mb-8 border-b border-foreground/10 pb-2">Order History</h2>
           {loadingOrders ? (
-            <p className="font-bold uppercase text-2xl">Loading orders...</p>
+            <p className="font-sans text-sm tracking-widest uppercase text-foreground/50 py-12 text-center">Loading orders...</p>
           ) : error ? (
-            <p className="font-bold uppercase text-red-500 text-2xl">{error}</p>
+            <p className="font-sans text-sm tracking-wide text-red-500 py-12 text-center">{error}</p>
           ) : orders.length === 0 ? (
-            <div className="bg-secondary border-4 border-foreground p-6 text-center font-bold uppercase">
-              You have not placed any orders yet.
+            <div className="border border-foreground/10 bg-background/50 p-12 text-center">
+              <p className="font-sans text-sm tracking-widest uppercase text-foreground/50 mb-6">No orders found</p>
+              <Link to="/shop" className="inline-block bg-foreground text-background font-sans text-xs tracking-widest uppercase py-3 px-8 hover:bg-primary transition-colors">
+                Start Shopping
+              </Link>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full border-4 border-foreground bg-secondary text-left">
-                <thead className="bg-foreground text-background uppercase font-black tracking-wider">
+            <div className="overflow-x-auto border border-foreground/10 bg-background/50">
+              <table className="w-full text-left font-sans text-sm">
+                <thead className="bg-foreground/5 border-b border-foreground/10">
                   <tr>
-                    <th className="p-4 border-b-4 border-r-4 border-foreground">ID</th>
-                    <th className="p-4 border-b-4 border-r-4 border-foreground">Date</th>
-                    <th className="p-4 border-b-4 border-r-4 border-foreground">Total</th>
-                    <th className="p-4 border-b-4 border-r-4 border-foreground">Paid</th>
-                    <th className="p-4 border-b-4 border-foreground">Status</th>
+                    <th className="p-4 font-normal tracking-widest uppercase text-xs text-foreground/50">Order</th>
+                    <th className="p-4 font-normal tracking-widest uppercase text-xs text-foreground/50">Date</th>
+                    <th className="p-4 font-normal tracking-widest uppercase text-xs text-foreground/50">Total</th>
+                    <th className="p-4 font-normal tracking-widest uppercase text-xs text-foreground/50">Paid</th>
+                    <th className="p-4 font-normal tracking-widest uppercase text-xs text-foreground/50">Status</th>
                   </tr>
                 </thead>
-                <tbody className="font-medium">
+                <tbody>
                   {orders.map((order) => (
-                    <tr key={order._id} className="border-b-4 border-foreground hover:bg-background transition-colors">
-                      <td className="p-4 border-r-4 border-foreground">
-                        <Link to={`/order/${order._id}`} className="text-primary hover:underline font-bold">
-                          {order._id.substring(0, 10)}...
+                    <tr key={order._id} className="border-b border-foreground/5 hover:bg-foreground/5 transition-colors">
+                      <td className="p-4">
+                        <Link to={`/order/${order._id}`} className="hover:text-primary transition-colors underline underline-offset-4">
+                          #{order._id.substring(order._id.length - 6)}
                         </Link>
                       </td>
-                      <td className="p-4 border-r-4 border-foreground">{order.createdAt.substring(0, 10)}</td>
-                      <td className="p-4 border-r-4 border-foreground text-primary font-bold">₹{order.totalPrice.toFixed(2)}</td>
-                      <td className="p-4 border-r-4 border-foreground">
-                        {order.isPaid ? order.paidAt.substring(0, 10) : <span className="text-red-500 font-bold uppercase">No</span>}
+                      <td className="p-4 text-foreground/80">{new Date(order.createdAt).toLocaleDateString()}</td>
+                      <td className="p-4 text-foreground/80">₹{order.totalPrice.toFixed(2)}</td>
+                      <td className="p-4">
+                        {order.isPaid ? (
+                          <span className="text-foreground/80">{new Date(order.paidAt).toLocaleDateString()}</span>
+                        ) : (
+                          <span className="text-foreground/30">Pending</span>
+                        )}
                       </td>
-                      <td className="p-4 border-foreground font-bold uppercase">
-                        <span className={order.status === 'Delivered' ? 'text-primary' : ''}>
+                      <td className="p-4">
+                        <span className={`tracking-wide ${order.status === 'Delivered' ? 'text-primary' : 'text-foreground/60'}`}>
                           {order.status || 'Processing'}
                         </span>
                       </td>

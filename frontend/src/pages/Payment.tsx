@@ -21,45 +21,45 @@ const Payment = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-5xl font-black uppercase mb-8 tracking-tight">Payment Method</h1>
+    <div className="max-w-2xl mx-auto py-12 lg:py-24 px-6 animate-fade-in">
+      <h1 className="text-3xl md:text-5xl font-display tracking-wide mb-12 text-center">Payment Method</h1>
       
-      <form onSubmit={submitHandler} className="space-y-6">
+      <form onSubmit={submitHandler} className="space-y-8">
         <div>
-          <label className="block font-bold uppercase mb-4 text-xl">Select Method</label>
+          <label className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-6 text-center">Select Method</label>
           
           <div className="space-y-4">
-            <label className="flex items-center space-x-4 p-4 border-4 border-foreground bg-secondary cursor-pointer hover:bg-background transition-colors">
+            <label className={`flex items-center space-x-4 p-6 border transition-colors cursor-pointer ${payment === 'Razorpay' ? 'border-foreground bg-foreground/5' : 'border-foreground/20 hover:border-foreground/50'}`}>
               <input 
                 type="radio" 
                 name="paymentMethod" 
                 value="Razorpay" 
                 checked={payment === 'Razorpay'}
                 onChange={(e) => setPayment(e.target.value)}
-                className="w-5 h-5 accent-primary"
+                className="w-4 h-4 accent-foreground"
               />
-              <span className="font-bold text-lg">Razorpay (Cards / UPI / NetBanking)</span>
+              <span className="font-sans text-sm tracking-wide">Razorpay (Cards / UPI / NetBanking)</span>
             </label>
 
-            <label className="flex items-center space-x-4 p-4 border-4 border-foreground bg-secondary cursor-pointer hover:bg-background transition-colors">
+            <label className={`flex items-center space-x-4 p-6 border transition-colors cursor-pointer ${payment === 'Stripe' ? 'border-foreground bg-foreground/5' : 'border-foreground/20 hover:border-foreground/50'}`}>
               <input 
                 type="radio" 
                 name="paymentMethod" 
-                value="Cash on Delivery" 
-                checked={payment === 'Cash on Delivery'}
+                value="Stripe" 
+                checked={payment === 'Stripe'}
                 onChange={(e) => setPayment(e.target.value)}
-                className="w-6 h-6 accent-primary"
+                className="w-4 h-4 accent-foreground"
               />
-              <span className="font-bold text-lg uppercase">Stripe</span>
+              <span className="font-sans text-sm tracking-wide">Stripe</span>
             </label>
           </div>
         </div>
 
         <button 
           type="submit" 
-          className="w-full bg-primary text-background font-black uppercase tracking-widest py-4 px-8 border-4 border-foreground hover:bg-foreground hover:text-background transition-all mt-8"
+          className="w-full bg-foreground text-background font-sans text-xs tracking-widest uppercase py-4 hover:bg-primary transition-colors mt-8"
         >
-          Continue
+          Review Order
         </button>
       </form>
     </div>

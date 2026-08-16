@@ -169,79 +169,81 @@ const Order = () => {
   if (!order) return <div className="text-center py-20 font-black text-2xl uppercase">Order Not Found</div>;
 
   return (
-    <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-4xl md:text-5xl font-black uppercase mb-8 tracking-tight break-all">
+    <div className="max-w-7xl mx-auto py-12 lg:py-24 px-6 animate-fade-in">
+      <h1 className="text-3xl md:text-5xl font-display tracking-wide mb-12 break-all">
         Order {order._id}
       </h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
         {/* Left Column - Details */}
-        <div className="lg:col-span-2 space-y-12">
+        <div className="lg:col-span-2 space-y-16">
           
           <section>
-            <h2 className="text-3xl font-black uppercase mb-4 tracking-tight border-b-4 border-foreground pb-2">Order Status</h2>
+            <h2 className="text-sm font-sans tracking-widest uppercase text-foreground/50 mb-6 border-b border-foreground/10 pb-2">Order Status</h2>
             
-            <div className="mb-8">
-              <div className="flex justify-between mb-2">
-                <span className={`font-bold uppercase ${order.status === 'Processing' || order.status === 'Shipped' || order.status === 'Delivered' ? 'text-primary' : 'text-gray-400'}`}>Processing</span>
-                <span className={`font-bold uppercase ${order.status === 'Shipped' || order.status === 'Delivered' ? 'text-primary' : 'text-gray-400'}`}>Shipped</span>
-                <span className={`font-bold uppercase ${order.status === 'Delivered' ? 'text-primary' : 'text-gray-400'}`}>Delivered</span>
+            <div className="mb-12">
+              <div className="flex justify-between mb-4 font-sans text-xs tracking-widest uppercase">
+                <span className={`${order.status === 'Processing' || order.status === 'Shipped' || order.status === 'Delivered' ? 'text-foreground' : 'text-foreground/30'}`}>Processing</span>
+                <span className={`${order.status === 'Shipped' || order.status === 'Delivered' ? 'text-foreground' : 'text-foreground/30'}`}>Shipped</span>
+                <span className={`${order.status === 'Delivered' ? 'text-foreground' : 'text-foreground/30'}`}>Delivered</span>
               </div>
-              <div className="w-full h-4 bg-gray-200 border-2 border-foreground flex rounded-full overflow-hidden">
-                <div className={`h-full bg-primary transition-all duration-500 ${
+              <div className="w-full h-1 bg-foreground/10 flex overflow-hidden">
+                <div className={`h-full bg-foreground transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                   order.status === 'Delivered' ? 'w-full' : 
-                  order.status === 'Shipped' ? 'w-1/2 border-r-2 border-foreground' : 
-                  'w-1/4 border-r-2 border-foreground'
+                  order.status === 'Shipped' ? 'w-1/2' : 
+                  'w-1/4'
                 }`}></div>
               </div>
             </div>
 
-            <p className="text-lg font-medium mb-4">
-              <strong>Name:</strong> {order.user.name} <br />
-              <strong>Email:</strong> <a href={`mailto:${order.user.email}`} className="text-primary hover:underline">{order.user.email}</a> <br />
-              <strong>Address:</strong> {order.shippingAddress.address}, {order.shippingAddress.city} {order.shippingAddress.postalCode}, {order.shippingAddress.country}
+            <p className="font-sans text-sm tracking-wide leading-relaxed text-foreground/80 mb-6">
+              <strong className="text-foreground">Name:</strong> {order.user.name} <br />
+              <strong className="text-foreground">Email:</strong> <a href={`mailto:${order.user.email}`} className="text-primary hover:underline">{order.user.email}</a> <br />
+              <strong className="text-foreground">Address:</strong> {order.shippingAddress.address}, {order.shippingAddress.city} {order.shippingAddress.postalCode}, {order.shippingAddress.country}
             </p>
             {order.isDelivered ? (
-              <div className="bg-green-100 text-green-800 border-4 border-green-800 p-4 font-bold uppercase">
+              <div className="bg-primary/5 text-primary border border-primary/20 p-4 font-sans text-xs tracking-widest uppercase text-center">
                 Delivered on {new Date(order.deliveredAt!).toLocaleDateString()}
               </div>
             ) : (
-              <div className="bg-secondary text-foreground border-4 border-foreground p-4 font-bold uppercase">
+              <div className="bg-muted/10 text-foreground/70 border border-foreground/10 p-4 font-sans text-xs tracking-widest uppercase text-center">
                 Current Status: {order.status}
               </div>
             )}
           </section>
 
           <section>
-            <h2 className="text-3xl font-black uppercase mb-4 tracking-tight border-b-4 border-foreground pb-2">Payment Method</h2>
-            <p className="text-lg font-medium mb-4">
-              <strong>Method:</strong> {order.paymentMethod}
+            <h2 className="text-sm font-sans tracking-widest uppercase text-foreground/50 mb-6 border-b border-foreground/10 pb-2">Payment Method</h2>
+            <p className="font-sans text-sm tracking-wide leading-relaxed text-foreground/80 mb-6">
+              <strong className="text-foreground">Method:</strong> {order.paymentMethod}
             </p>
             {order.isPaid ? (
-              <div className="bg-green-100 text-green-800 border-4 border-green-800 p-4 font-bold uppercase">
+              <div className="bg-primary/5 text-primary border border-primary/20 p-4 font-sans text-xs tracking-widest uppercase text-center">
                 Paid on {new Date(order.paidAt!).toLocaleDateString()}
               </div>
             ) : (
-              <div className="bg-red-100 text-red-800 border-4 border-red-800 p-4 font-bold uppercase">
+              <div className="bg-red-500/10 text-red-500 border border-red-500/20 p-4 font-sans text-xs tracking-widest uppercase text-center">
                 Not Paid
               </div>
             )}
           </section>
 
           <section>
-            <h2 className="text-3xl font-black uppercase mb-4 tracking-tight border-b-4 border-foreground pb-2">Order Items</h2>
-            <ul className="space-y-4">
+            <h2 className="text-sm font-sans tracking-widest uppercase text-foreground/50 mb-6 border-b border-foreground/10 pb-2">Order Items</h2>
+            <ul className="space-y-6">
               {order.orderItems.map((item, index) => (
-                <li key={index} className="flex items-center space-x-4 border-4 border-foreground p-4 bg-secondary">
-                  <img src={item.image} alt={item.name} className="w-16 h-16 object-cover border-2 border-foreground" />
-                  <div className="flex-1 font-bold">
-                    <Link to={`/product/${item.product}`} className="hover:text-primary transition-colors uppercase">
+                <li key={index} className="flex items-center space-x-6 border-b border-foreground/10 pb-6 last:border-0 last:pb-0">
+                  <img src={item.image} alt={item.name} className="w-20 h-28 object-cover bg-muted/20" />
+                  <div className="flex-1">
+                    <Link to={`/product/${item.product}`} className="font-sans text-sm tracking-wide hover:text-primary transition-colors block mb-1">
                       {item.name}
                     </Link>
-                    <div className="text-sm text-gray-500">Size: {item.size}</div>
+                    <div className="text-xs font-sans tracking-widest uppercase text-foreground/50">Size: {item.size}</div>
                   </div>
-                  <div className="font-black text-lg">
-                    {item.qty} x ₹{item.price} = ₹{item.qty * item.price}
+                  <div className="text-sm font-sans tracking-wide text-right">
+                    <span className="text-foreground/50 mr-2">{item.qty} x ₹{item.price}</span>
+                    <br className="sm:hidden"/>
+                    <span>₹{item.qty * item.price}</span>
                   </div>
                 </li>
               ))}
@@ -251,25 +253,25 @@ const Order = () => {
 
         {/* Right Column - Summary */}
         <div className="lg:col-span-1">
-          <div className="border-4 border-foreground p-6 bg-secondary sticky top-8">
-            <h2 className="text-2xl font-black uppercase mb-6 tracking-tight border-b-4 border-foreground pb-2">Order Summary</h2>
+          <div className="border border-foreground/10 p-8 bg-background/50 sticky top-32">
+            <h2 className="text-sm font-sans tracking-widest uppercase text-foreground/50 mb-8 border-b border-foreground/10 pb-2">Order Summary</h2>
             
-            <div className="space-y-4 text-lg font-bold">
+            <div className="space-y-4 text-sm font-sans tracking-wide">
               <div className="flex justify-between">
-                <span>Items</span>
+                <span className="text-foreground/70">Items</span>
                 <span>₹{order.itemsPrice.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
-                <span>Shipping</span>
+                <span className="text-foreground/70">Shipping</span>
                 <span>₹{order.shippingPrice.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
-                <span>Tax</span>
+                <span className="text-foreground/70">Tax</span>
                 <span>₹{order.taxPrice.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-2xl pt-4 border-t-4 border-foreground">
+              <div className="flex justify-between text-lg pt-6 border-t border-foreground/10 mt-6">
                 <span>Total</span>
-                <span className="text-primary">₹{order.totalPrice.toFixed(2)}</span>
+                <span>₹{order.totalPrice.toFixed(2)}</span>
               </div>
             </div>
             
@@ -277,10 +279,10 @@ const Order = () => {
               <button
                 onClick={payHandler}
                 disabled={payLoading}
-                className={`w-full mt-8 py-4 px-8 border-4 border-foreground font-black uppercase tracking-widest transition-all ${
+                className={`w-full mt-10 py-4 font-sans text-xs tracking-widest uppercase transition-colors ${
                   payLoading
-                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    : 'bg-primary text-background hover:bg-foreground hover:text-background'
+                    ? 'bg-muted text-foreground/30 cursor-not-allowed'
+                    : 'bg-foreground text-background hover:bg-primary'
                 }`}
               >
                 {payLoading ? 'Loading...' : `Pay With Razorpay`}
@@ -288,14 +290,14 @@ const Order = () => {
             )}
 
             {userInfo?.isAdmin && order.isPaid && !order.isDelivered && (
-              <div className="mt-8 border-4 border-foreground p-4 bg-background">
-                <h3 className="font-black uppercase mb-4">Update Status</h3>
-                <div className="flex flex-col gap-2">
+              <div className="mt-10 border-t border-foreground/10 pt-8">
+                <h3 className="text-sm font-sans tracking-widest uppercase text-foreground/50 mb-6">Admin Actions</h3>
+                <div className="flex flex-col gap-4">
                   {order.status === 'Processing' && (
                     <button
                       onClick={() => statusHandler('Shipped')}
                       disabled={deliverLoading}
-                      className="w-full py-3 px-4 border-2 border-foreground font-black uppercase bg-secondary hover:bg-primary hover:text-background transition-all"
+                      className="w-full py-4 font-sans text-xs tracking-widest uppercase bg-transparent border border-foreground/30 hover:border-foreground transition-colors"
                     >
                       {deliverLoading ? 'Wait...' : 'Mark as Shipped'}
                     </button>
@@ -304,7 +306,7 @@ const Order = () => {
                     <button
                       onClick={() => statusHandler('Delivered')}
                       disabled={deliverLoading}
-                      className="w-full py-3 px-4 border-2 border-foreground font-black uppercase bg-foreground text-background hover:bg-primary transition-all"
+                      className="w-full py-4 font-sans text-xs tracking-widest uppercase bg-foreground text-background hover:bg-primary transition-colors"
                     >
                       {deliverLoading ? 'Wait...' : 'Mark as Delivered'}
                     </button>
@@ -314,7 +316,7 @@ const Order = () => {
             )}
             
             {userInfo?.isAdmin && !order.isPaid && !order.isDelivered && (
-              <div className="mt-4 p-4 border-4 border-orange-500 bg-orange-100 text-orange-800 text-center font-bold text-sm uppercase">
+              <div className="mt-6 p-4 bg-red-500/10 text-red-500 text-sm tracking-wide text-center">
                 Cannot deliver unpaid order
               </div>
             )}

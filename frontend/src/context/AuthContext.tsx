@@ -7,6 +7,7 @@ interface UserInfo {
   email: string;
   isAdmin: boolean;
   wishlist?: any[];
+  token?: string;
 }
 
 interface AuthContextType {

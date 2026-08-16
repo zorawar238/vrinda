@@ -40,25 +40,28 @@ export function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-secondary">
-      <div className="w-full max-w-md bg-background border-4 border-foreground shadow-[12px_12px_0px_0px_rgba(17,17,17,1)] p-8">
-        <h1 className="text-4xl font-display font-bold uppercase mb-8 border-b-4 border-foreground pb-4">
-          Login
-        </h1>
+    <div className="min-h-[80vh] flex items-center justify-center px-6 py-12 animate-fade-in">
+      <div className="w-full max-w-md border border-foreground/10 bg-background/50 p-10 md:p-14">
+        <div className="text-center mb-10">
+          <h1 className="text-3xl md:text-4xl font-display tracking-wide mb-2 text-foreground">
+            Sign In
+          </h1>
+          <p className="font-sans text-xs tracking-widest uppercase text-foreground/50">Welcome back to Vrinda</p>
+        </div>
         
         {error && (
-          <div className="mb-6 bg-red-500 text-white font-bold p-4 border-2 border-foreground uppercase">
+          <div className="mb-8 bg-red-500/10 text-red-500 font-sans text-sm tracking-wide p-4 text-center">
             {error}
           </div>
         )}
 
-        <form onSubmit={submitHandler} className="space-y-6">
+        <form onSubmit={submitHandler} className="space-y-8">
           <div>
-            <label className="block font-bold uppercase mb-2">Email Address</label>
+            <label className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-3">Email Address</label>
             <input 
               type="email" 
-              className="w-full border-4 border-foreground p-4 bg-secondary font-medium focus:outline-none focus:bg-background transition-colors"
-              placeholder="ENTER EMAIL"
+              className="w-full border-b border-foreground/30 py-3 bg-transparent text-sm focus:outline-none focus:border-foreground transition-colors placeholder-foreground/20"
+              placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -66,17 +69,17 @@ export function Login() {
           </div>
 
           <div>
-            <label className="block font-bold uppercase mb-2">Password</label>
-            <div className="flex flex-col gap-2">
+            <label className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-3">Password</label>
+            <div className="flex flex-col gap-3">
               <input 
                 type="password" 
-                className="w-full border-4 border-foreground p-4 bg-secondary font-medium focus:outline-none focus:bg-background transition-colors"
-                placeholder="ENTER PASSWORD"
+                className="w-full border-b border-foreground/30 py-3 bg-transparent text-sm focus:outline-none focus:border-foreground transition-colors placeholder-foreground/20"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-              <Link to="/forgot-password" className="text-right font-bold text-sm uppercase hover:text-primary transition-colors">
+              <Link to="/forgot-password" className="text-right font-sans text-xs tracking-widest uppercase text-foreground/50 hover:text-foreground transition-colors">
                 Forgot Password?
               </Link>
             </div>
@@ -85,16 +88,16 @@ export function Login() {
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full bg-primary text-background font-display font-bold text-2xl py-4 border-4 border-foreground hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(17,17,17,1)] transition-all uppercase disabled:opacity-50"
+            className="w-full bg-foreground text-background font-sans text-xs tracking-widest uppercase py-4 hover:bg-primary transition-colors disabled:opacity-50 mt-4"
           >
             {loading ? 'Authenticating...' : 'Sign In'}
           </button>
         </form>
 
-        <div className="mt-8 text-center font-bold">
-          <p>New Customer?</p>
-          <Link to="/register" className="text-primary hover:underline uppercase text-xl">
-            Register Here
+        <div className="mt-12 text-center border-t border-foreground/10 pt-8">
+          <p className="font-sans text-xs tracking-wide text-foreground/50 mb-4">Don't have an account?</p>
+          <Link to="/register" className="font-sans text-xs tracking-widest uppercase text-foreground hover:text-primary transition-colors underline underline-offset-4">
+            Create Account
           </Link>
         </div>
       </div>

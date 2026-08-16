@@ -58,5 +58,15 @@ export const products = [
     stock: 1,
     sizes: ['M', 'L'],
     isTrending: true,
+  },
+  {
+    name: 'Rickshaw Red Crop Top',
+    description: 'A vibrant red floral top that stands out in the bustling city streets. Comfortable and effortlessly stylish.',
+    price: 1599,
+    category: 'Tops',
+    image: '/rickshaw_product.png',
+    stock: 20,
+    sizes: ['S', 'M', 'L'],
+    isTrending: true,
   }
 ];

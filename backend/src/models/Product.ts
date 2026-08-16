@@ -15,6 +15,7 @@ export interface IProduct extends Document {
   sizes: string[];
   stock: number;
   image: string;
+  images: string[];
   isTrending?: boolean;
   reviews: IReview[];
   rating: number;
@@ -71,6 +72,10 @@ const productSchema = new Schema<IProduct>(
     image: {
       type: String,
       required: [true, 'Product image URL is required'],
+    },
+    images: {
+      type: [String],
+      default: [],
     },
     isTrending: {
       type: Boolean,

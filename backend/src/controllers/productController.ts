@@ -117,6 +117,7 @@ export const createProduct = async (req: AuthRequest, res: Response): Promise<vo
       price: 0,
       user: req.user?._id || null, // Assuming you might link product to admin user
       image: 'https://via.placeholder.com/400x500',
+      images: [],
       category: 'Sample category',
       stock: 0,
       description: 'Sample description',
@@ -141,6 +142,7 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
       price,
       description,
       image,
+      images,
       category,
       stock,
       sizes,
@@ -154,6 +156,7 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
       product.price = price;
       product.description = description;
       product.image = image;
+      product.images = images || product.images;
       product.category = category;
       product.stock = stock;
       product.sizes = sizes;
