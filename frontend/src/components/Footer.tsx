@@ -15,7 +15,7 @@ export function Footer() {
           <h3 className="font-sans text-xs tracking-[0.2em] uppercase mb-6 text-foreground/50">Shop</h3>
           <ul className="space-y-4 text-sm">
             <li><Link to="/shop" className="hover:text-primary transition-colors block">New Arrivals</Link></li>
-            <li><Link to="/shop" className="hover:text-primary transition-colors block">Best Sellers</Link></li>
+            <li><Link to="/shop?sort=best" className="hover:text-primary transition-colors block">Best Sellers</Link></li>
             <li><Link to="/collections" className="hover:text-primary transition-colors block">Collections</Link></li>
             <li><Link to="/shop?category=sale" className="hover:text-primary transition-colors block">Sale</Link></li>
           </ul>

@@ -12,9 +12,9 @@ export function BrandStory() {
         {/* Center Image */}
         <div className="absolute inset-x-0 bottom-0 md:inset-0 z-10 flex items-end md:items-center justify-center pointer-events-none">
            <img 
-              src="https://images.unsplash.com/photo-1524041255072-7da0525d6b34?auto=format&fit=crop&w=800&q=80"
-              alt="Model with hat"
-              className="w-full md:w-auto h-[300px] md:h-full object-cover grayscale opacity-90"
+              src="/featured/brand_story_model.jpg"
+              alt="Model in white dress"
+              className="w-full md:w-auto h-[300px] md:h-full object-cover"
            />
            {/* Shop Now Overlay */}
            <div className="absolute bottom-10 z-30 pointer-events-auto">

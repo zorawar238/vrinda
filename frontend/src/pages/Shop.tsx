@@ -43,9 +43,13 @@ export function Shop() {
 
   useEffect(() => {
     const search = searchParams.get('search');
+    const sort = searchParams.get('sort');
     if (search !== null) {
       setSearchKeyword(search);
       setShowFilters(true);
+    }
+    if (sort !== null) {
+      setSortOption(sort);
     }
   }, [searchParams]);
 
@@ -99,6 +103,7 @@ export function Shop() {
             className="border-b border-foreground/30 px-2 py-1 bg-transparent outline-none cursor-pointer hover:border-foreground hover:text-foreground transition-colors appearance-none text-right"
           >
             <option value="">Sort: Featured</option>
+            <option value="best">Best Sellers</option>
             <option value="priceAsc">Price: Low to High</option>
             <option value="priceDesc">Price: High to Low</option>
           </select>

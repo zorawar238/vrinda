@@ -84,9 +84,9 @@ export function ProductGrid() {
           ))
         )}
       </div>
-      <div className="mt-12 text-center md:hidden">
-        <Link to="/shop" className="inline-block font-sans text-xs uppercase tracking-widest bg-foreground text-background px-8 py-4 hover:bg-primary transition-colors">
-          View All
+      <div className="mt-16 text-center">
+        <Link to="/shop" className="inline-block font-sans text-xs uppercase tracking-widest border border-foreground text-foreground px-8 py-4 hover:bg-foreground hover:text-background transition-colors">
+          View All Products
         </Link>
       </div>
     </section>

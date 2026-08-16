@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@font-face { font-family: "Badaboom BB"; src: url("/fonts/badaboom/BADABB__.TTF") format("truetype"); }
+
 @theme {
   --color-white: #FDFDFD;
   --color-black: #050505;

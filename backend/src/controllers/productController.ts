@@ -34,6 +34,8 @@ export const getProducts = async (req: Request, res: Response) => {
       sortOption = { price: 1 };
     } else if (req.query.sort === 'priceDesc') {
       sortOption = { price: -1 };
+    } else if (req.query.sort === 'best') {
+      sortOption = { rating: -1, numReviews: -1 };
     } else {
       // Default: sort by newest
       sortOption = { createdAt: -1 };
