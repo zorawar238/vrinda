@@ -3,7 +3,7 @@ import { WishlistButton } from '../components/WishlistButton';
 import { Rating } from '../components/Rating';
 import { Link, useSearchParams } from 'react-router-dom';
 import { AnimatedPage } from '../components/AnimatedPage';
-import { motion, Variants } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 
 interface Product {
   _id: string;
