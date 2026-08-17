@@ -2,110 +2,115 @@
 
 export function CategoryGrid() {
   return (
-    <section className="bg-[#f0f0f0] min-h-[788px] relative overflow-hidden flex items-center justify-center font-sans selection:bg-blue-500 selection:text-white">
-      <div className="absolute inset-0 w-full h-full flex items-center justify-center scale-[0.875] origin-center">
-        <div className="w-full h-[900px] relative flex items-center justify-center px-6 py-12">
+    <section className="bg-[#f0f0f0] min-h-[100vh] md:min-h-[788px] relative overflow-hidden flex items-center justify-center font-sans selection:bg-blue-500 selection:text-white">
+      <div className="absolute inset-0 w-full h-full flex items-center justify-center md:scale-[0.875] origin-center">
+        <div className="w-full min-h-full md:h-[900px] relative flex flex-col md:flex-row items-center md:items-start justify-center px-0 md:px-6 py-20 md:py-12">
           
           {/* Huge Background Typography */}
-          <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-[120%] flex justify-center pointer-events-none select-none z-0">
-            <h1 className="mt-12 mb-8 text-[14rem] md:text-[22rem] text-[#3d3d3d]/90 leading-none whitespace-nowrap drop-shadow-sm pr-12" style={{ fontFamily: "'Badaboom BB', cursive" }}>
+          <div className="absolute top-12 md:-top-8 left-1/2 -translate-x-1/2 w-[120%] flex justify-center pointer-events-none select-none z-0">
+            <h1 className="mt-0 md:mt-12 mb-0 md:mb-8 text-[7rem] sm:text-[9rem] md:text-[22rem] text-[#3d3d3d]/90 leading-none whitespace-nowrap drop-shadow-sm md:pr-12" style={{ fontFamily: "'Badaboom BB', cursive" }}>
               Order Now
             </h1>
           </div>
 
-          <div className="max-w-[1200px] w-full md:h-[800px] relative z-10 mx-auto flex flex-col md:block items-center justify-center gap-16 pt-32 pb-20 md:py-0 px-4 md:px-0">
+          <div className="max-w-[1200px] w-full md:h-[800px] relative z-10 mx-auto flex flex-col md:block items-center justify-start md:justify-center gap-8 md:gap-0 mt-32 md:mt-0">
         
-        {/* Center Main Image */}
-        <div className="relative md:absolute md:bottom-0 md:left-1/2 md:-translate-x-1/2 h-[50vh] md:h-[75%] z-10 flex items-end order-1 md:order-none">
-          <img 
-            src="/featured/image1.png" 
-            alt="Main Feature" 
-            className="h-full w-auto object-cover drop-shadow-[0_30px_30px_rgba(0,0,0,0.3)] filter contrast-110 saturate-125 mx-auto" 
-          />
-        </div>
-
-        {/* Center/Right Bottom: Info Card */}
-        <div className="relative md:absolute md:bottom-12 md:right-[15%] z-30 order-2 md:order-none">
-          <div className="bg-[#fcfcfc] p-6 rounded-3xl shadow-2xl w-full max-w-[320px] md:w-[320px] mx-auto relative overflow-hidden border border-gray-100">
-            <h2 className="text-secondary font-serif text-[2.5rem] leading-none mb-1">
-              Order Now! <span className="text-[0.6rem] text-gray-500 font-sans tracking-normal align-top inline-block -ml-1 mt-1 font-bold">2026</span>
-            </h2>
-            <p className="text-[10px] font-sans text-gray-400 tracking-widest mb-4 uppercase">
-              /VRINDA/ <span className="text-gray-800 font-bold ml-1">Limited Edition</span>
-            </p>
-            
-            <div className="mb-4 mt-2">
-              <h4 className="text-secondary font-serif text-lg leading-tight">Deadline of Orders</h4>
-              <p className="font-serif italic text-secondary text-base">/January 31, 2026/</p>
+            {/* 1. Center Main Image */}
+            <div className="relative md:absolute md:bottom-0 md:left-1/2 md:-translate-x-1/2 w-[92%] md:w-auto h-auto md:h-[75%] z-10 flex items-end order-1 md:order-none">
+              <img 
+                src="/featured/image1.png" 
+                alt="Main Feature" 
+                className="w-full md:w-auto h-auto md:h-full object-cover drop-shadow-[0_30px_30px_rgba(0,0,0,0.3)] filter contrast-110 saturate-125 mx-auto" 
+              />
             </div>
 
-            <h3 className="font-bold text-gray-900 text-sm mb-2 leading-tight font-serif">:VRINDA Crop Zip</h3>
-            <p className="text-xs text-gray-700 mb-1">Jacket Sizes</p>
-            <ul className="list-disc list-inside text-[11px] text-gray-900 font-bold mb-4 ml-1">
-              <li>Medium</li>
-              <li>Large</li>
-              <li>X-Large</li>
-              <li>XX-Large</li>
-            </ul>
+            {/* 2. Mobile Image Gallery / Desktop Scattered Elements */}
+            <div className="flex flex-row overflow-x-auto w-[92%] md:w-full mx-auto gap-4 order-2 md:contents snap-x py-2 hidden-scrollbar">
+              
+              {/* Left Middle: MacOS Alert Box */}
+              <div className="relative md:absolute md:top-[40%] md:left-24 z-30 shrink-0 snap-center w-[260px] md:w-auto">
+                <div className="bg-[#fcfcfc]/90 backdrop-blur-md rounded-md shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] overflow-hidden w-full md:w-[280px] border border-gray-300">
+                  {/* Header */}
+                  <div className="bg-gradient-to-b from-[#f0f0f0] to-[#e0e0e0] px-3 py-1.5 flex gap-2 items-center border-b border-gray-300">
+                    <div className="w-3 h-3 rounded-full bg-[#ff5f56] shadow-sm border border-[#e0443e]"></div>
+                    <div className="w-3 h-3 rounded-full bg-[#ffbd2e] shadow-sm border border-[#dea123]"></div>
+                    <div className="w-3 h-3 rounded-full bg-[#27c93f] shadow-sm border border-[#1aab29]"></div>
+                  </div>
+                  {/* Content */}
+                  <div className="p-4 flex gap-3 items-start bg-white/50">
+                    <div className="bg-[#ff3b30] text-white rounded-full w-5 h-5 flex items-center justify-center font-bold flex-shrink-0 mt-1 shadow-sm text-xs">!</div>
+                    <div>
+                      <p className="text-[#ff3b30] font-bold text-[10px] uppercase tracking-wider mb-0.5">note!</p>
+                      <p className="text-xs text-gray-800 leading-snug font-medium">only for baddies!!!!!!</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-            <p className="text-xs text-gray-700 mb-1">Material</p>
-            <ul className="list-disc list-inside text-[11px] text-gray-900 font-bold mb-6 ml-1">
-              <li>Stretch Jersey</li>
-              <li>embroidered</li>
-            </ul>
+              {/* Top Right: Blue Selection Box Image */}
+              <div className="relative md:absolute md:top-10 md:right-20 z-20 shrink-0 snap-center w-48 md:w-auto">
+                <div className="relative border-[1.5px] border-secondary p-0.5 bg-white shadow-xl w-full md:w-56 mx-auto">
+                  {/* Transform Nodes */}
+                  <div className="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
+                  <div className="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
+                  <div className="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
+                  <div className="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
+                  <img src="/featured/image3.png" alt="Detail Back" className="w-full h-auto object-cover" />
+                </div>
+              </div>
 
-            <div className="flex items-baseline gap-1 mt-2">
-              <span className="text-[3.5rem] font-serif text-gray-900 tracking-tighter leading-none">799</span>
-              <span className="text-gray-500 font-sans text-[10px] uppercase tracking-wider mb-1">Php</span>
+              {/* Bottom Left: Another Blue Selection Box Image */}
+              <div className="relative md:absolute md:bottom-16 md:left-24 z-20 shrink-0 snap-center w-56 md:w-auto">
+                <div className="relative border-[1.5px] border-secondary p-1 bg-white shadow-xl w-full md:w-56 mx-auto flex gap-1 justify-between">
+                  {/* Transform Nodes */}
+                  <div className="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
+                  <div className="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
+                  <div className="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
+                  <div className="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
+                  
+                  <img src="/featured/image2.png" alt="Detail Front" className="w-[49%] h-28 md:h-28 object-cover object-top" />
+                  <img src="/featured/image3.png" alt="Detail Back" className="w-[49%] h-28 md:h-28 object-cover object-center" />
+                </div>
+              </div>
+
             </div>
-          </div>
-        </div>
 
-        {/* Left Middle: MacOS Alert Box */}
-        <div className="relative md:absolute md:top-[40%] md:left-24 z-30 order-3 md:order-none w-full max-w-[280px] md:w-auto">
-          <div className="bg-[#fcfcfc]/90 backdrop-blur-md rounded-md shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] overflow-hidden w-full md:w-[280px] mx-auto border border-gray-300">
-            {/* Header */}
-            <div className="bg-gradient-to-b from-[#f0f0f0] to-[#e0e0e0] px-3 py-1.5 flex gap-2 items-center border-b border-gray-300">
-              <div className="w-3 h-3 rounded-full bg-[#ff5f56] shadow-sm border border-[#e0443e]"></div>
-              <div className="w-3 h-3 rounded-full bg-[#ffbd2e] shadow-sm border border-[#dea123]"></div>
-              <div className="w-3 h-3 rounded-full bg-[#27c93f] shadow-sm border border-[#1aab29]"></div>
-            </div>
-            {/* Content */}
-            <div className="p-4 flex gap-3 items-start bg-white/50">
-              <div className="bg-[#ff3b30] text-white rounded-full w-5 h-5 flex items-center justify-center font-bold flex-shrink-0 mt-1 shadow-sm text-xs">!</div>
-              <div>
-                <p className="text-[#ff3b30] font-bold text-[10px] uppercase tracking-wider mb-0.5">note!</p>
-                <p className="text-xs text-gray-800 leading-snug font-medium">only for baddies!!!!!!</p>
+            {/* 3. Info Card */}
+            <div className="relative md:absolute md:bottom-12 md:right-[15%] z-30 order-3 md:order-none w-[92%] md:w-auto mt-4 md:mt-0 mb-8 md:mb-0">
+              <div className="bg-[#fcfcfc] p-6 rounded-3xl shadow-2xl w-full max-w-[400px] md:w-[320px] mx-auto relative overflow-hidden border border-gray-100">
+                <h2 className="text-secondary font-serif text-[2.25rem] md:text-[2.5rem] leading-none mb-1">
+                  Order Now! <span className="text-[0.6rem] text-gray-500 font-sans tracking-normal align-top inline-block -ml-1 mt-1 font-bold">2026</span>
+                </h2>
+                <p className="text-[10px] font-sans text-gray-400 tracking-widest mb-4 uppercase">
+                  /VRINDA/ <span className="text-gray-800 font-bold ml-1">Limited Edition</span>
+                </p>
+                
+                <div className="mb-4 mt-2">
+                  <h4 className="text-secondary font-serif text-[1.1rem] md:text-lg leading-tight">Deadline of Orders</h4>
+                  <p className="font-serif italic text-secondary text-sm md:text-base">/January 31, 2026/</p>
+                </div>
+
+                <h3 className="font-bold text-gray-900 text-sm mb-2 leading-tight font-serif">:VRINDA Crop Zip</h3>
+                <p className="text-xs text-gray-700 mb-1">Jacket Sizes</p>
+                <ul className="list-disc list-inside text-[11px] text-gray-900 font-bold mb-4 ml-1">
+                  <li>Medium</li>
+                  <li>Large</li>
+                  <li>X-Large</li>
+                  <li>XX-Large</li>
+                </ul>
+
+                <p className="text-xs text-gray-700 mb-1">Material</p>
+                <ul className="list-disc list-inside text-[11px] text-gray-900 font-bold mb-6 ml-1">
+                  <li>Stretch Jersey</li>
+                  <li>embroidered</li>
+                </ul>
+
+                <div className="flex items-baseline gap-1 mt-2">
+                  <span className="text-[3rem] md:text-[3.5rem] font-serif text-gray-900 tracking-tighter leading-none">799</span>
+                  <span className="text-gray-500 font-sans text-[10px] uppercase tracking-wider mb-1">Php</span>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Top Right: Blue Selection Box Image */}
-        <div className="relative md:absolute md:top-10 md:right-20 z-20 order-4 md:order-none">
-          <div className="relative border-[1.5px] border-secondary p-0.5 bg-white shadow-xl w-48 md:w-56 mx-auto">
-            {/* Transform Nodes */}
-            <div className="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
-            <div className="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
-            <div className="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
-            <div className="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
-            <img src="/featured/image3.png" alt="Detail Back" className="w-full h-auto object-cover" />
-          </div>
-        </div>
-
-        {/* Bottom Left: Another Blue Selection Box Image */}
-        <div className="relative md:absolute md:bottom-16 md:left-24 z-20 order-5 md:order-none">
-           <div className="relative border-[1.5px] border-secondary p-1 bg-white shadow-xl w-56 mx-auto flex gap-1 justify-between">
-             {/* Transform Nodes */}
-             <div className="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
-             <div className="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
-             <div className="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
-             <div className="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
-             
-             <img src="/featured/image2.png" alt="Detail Front" className="w-[49%] h-28 object-cover object-top" />
-             <img src="/featured/image3.png" alt="Detail Back" className="w-[49%] h-28 object-cover object-center" />
-           </div>
-        </div>
 
           </div>
           
@@ -116,6 +121,15 @@ export function CategoryGrid() {
 
         </div>
       </div>
+      <style>{`
+        .hidden-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hidden-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </section>
   );
 }
