@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
 import { Shop } from './pages/Shop';
@@ -27,38 +28,42 @@ import { TrackOrder } from './pages/TrackOrder';
 import { WishlistProvider } from './context/WishlistContext';
 
 function App() {
+  const location = useLocation();
+  
   return (
     <WishlistProvider>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="shop" element={<Shop />} />
-          <Route path="collections" element={<Collections />} />
-          <Route path="about" element={<About />} />
-          <Route path="product/:id" element={<ProductDetail />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
-          <Route path="reset-password/:token" element={<ResetPassword />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="shipping" element={<Shipping />} />
-          <Route path="payment" element={<Payment />} />
-          <Route path="placeorder" element={<PlaceOrder />} />
-          <Route path="order/:id" element={<Order />} />
-          <Route path="wishlist" element={<Wishlist />} />
-          <Route path="faq" element={<FAQ />} />
-          <Route path="shipping-returns" element={<ShippingReturns />} />
-          <Route path="contact" element={<ContactUs />} />
-          <Route path="track-order" element={<TrackOrder />} />
-          
-          {/* Admin Routes */}
-          <Route path="admin/dashboard" element={<AdminDashboard />} />
-          <Route path="admin/productlist" element={<ProductList />} />
-          <Route path="admin/product/:id/edit" element={<ProductEdit />} />
-          <Route path="admin/userlist" element={<UserList />} />
-          <Route path="admin/orderlist" element={<OrderList />} />
-        </Route>
-      </Routes>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="shop" element={<Shop />} />
+            <Route path="collections" element={<Collections />} />
+            <Route path="about" element={<About />} />
+            <Route path="product/:id" element={<ProductDetail />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="reset-password/:token" element={<ResetPassword />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="shipping" element={<Shipping />} />
+            <Route path="payment" element={<Payment />} />
+            <Route path="placeorder" element={<PlaceOrder />} />
+            <Route path="order/:id" element={<Order />} />
+            <Route path="wishlist" element={<Wishlist />} />
+            <Route path="faq" element={<FAQ />} />
+            <Route path="shipping-returns" element={<ShippingReturns />} />
+            <Route path="contact" element={<ContactUs />} />
+            <Route path="track-order" element={<TrackOrder />} />
+            
+            {/* Admin Routes */}
+            <Route path="admin/dashboard" element={<AdminDashboard />} />
+            <Route path="admin/productlist" element={<ProductList />} />
+            <Route path="admin/product/:id/edit" element={<ProductEdit />} />
+            <Route path="admin/userlist" element={<UserList />} />
+            <Route path="admin/orderlist" element={<OrderList />} />
+          </Route>
+        </Routes>
+      </AnimatePresence>
     </WishlistProvider>
   );
 }

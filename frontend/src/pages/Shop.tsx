@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { WishlistButton } from '../components/WishlistButton';
 import { Rating } from '../components/Rating';
 import { Link, useSearchParams } from 'react-router-dom';
+import { AnimatedPage } from '../components/AnimatedPage';
+import { motion } from 'framer-motion';
 
 interface Product {
   _id: string;
@@ -12,6 +14,21 @@ interface Product {
   rating?: number;
   numReviews?: number;
 }
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+};
 
 export function Shop() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -82,7 +99,7 @@ export function Shop() {
   }, [searchKeyword, selectedCategory, sortOption]);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12 lg:py-24 animate-fade-in">
+    <AnimatedPage className="max-w-7xl mx-auto px-6 py-12 lg:py-24">
       <div className="flex flex-col md:flex-row justify-between items-end mb-8 border-b border-foreground/10 pb-6 gap-4">
         <div>
           <h1 className="text-4xl md:text-5xl font-display tracking-tight text-foreground">
@@ -111,7 +128,12 @@ export function Shop() {
       </div>
 
       {showFilters && (
-        <div className="mb-12 bg-muted/10 border border-foreground/10 p-8 animate-fade-in-down">
+        <motion.div 
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          className="mb-12 bg-muted/10 border border-foreground/10 p-8 overflow-hidden"
+        >
           <div className="grid md:grid-cols-2 gap-12">
             <div>
               <label className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-3">Search Products</label>
@@ -126,28 +148,37 @@ export function Shop() {
             <div>
               <label className="block font-sans text-xs tracking-widest uppercase text-foreground/50 mb-3">Categories</label>
               <div className="flex flex-wrap gap-3">
-                <button 
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => setSelectedCategory('')}
                   className={`px-5 py-2 border font-sans text-xs tracking-widest uppercase transition-colors ${selectedCategory === '' ? 'border-foreground bg-foreground text-background' : 'border-foreground/20 bg-transparent hover:border-foreground'}`}
                 >
                   All
-                </button>
+                </motion.button>
                 {categories.map((cat) => (
-                  <button 
+                  <motion.button 
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     key={cat}
                     onClick={() => setSelectedCategory(cat)}
                     className={`px-5 py-2 border font-sans text-xs tracking-widest uppercase transition-colors ${selectedCategory === cat ? 'border-foreground bg-foreground text-background' : 'border-foreground/20 bg-transparent hover:border-foreground'}`}
                   >
                     {cat}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
 
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12">
+      <motion.div 
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12"
+      >
         {loading ? (
           <div className="col-span-full py-8 text-center text-sm tracking-widest text-foreground/50 uppercase">Loading Catalog...</div>
         ) : error ? (
@@ -156,7 +187,7 @@ export function Shop() {
           <div className="col-span-full py-8 text-center text-sm tracking-widest text-foreground/50 uppercase">No products found.</div>
         ) : (
           products.map((p) => (
-            <div key={p._id} className="group flex flex-col">
+            <motion.div variants={item} key={p._id} className="group flex flex-col">
               <Link to={`/product/${p._id}`} className="relative aspect-[3/4] bg-muted/20 overflow-hidden mb-4 block">
                 {p.isTrending && (
                   <div className="absolute top-3 left-3 z-10 bg-primary/90 backdrop-blur-sm text-background text-[10px] tracking-widest uppercase px-2 py-1 rounded-full">
@@ -166,6 +197,7 @@ export function Shop() {
                 <img 
                   src={p.image} 
                   alt={p.name} 
+                  loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                 />
                 <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -184,10 +216,10 @@ export function Shop() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))
         )}
-      </div>
-    </div>
+      </motion.div>
+    </AnimatedPage>
   );
 }

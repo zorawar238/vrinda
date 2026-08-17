@@ -6,6 +6,8 @@ import { useAuth } from '../context/AuthContext';
 import { Heart } from 'lucide-react';
 import { Rating } from '../components/Rating';
 import { ProductCard } from '../components/ProductCard';
+import { AnimatedPage } from '../components/AnimatedPage';
+import { motion } from 'framer-motion';
 
 interface Product {
   _id: string;
@@ -141,34 +143,51 @@ export function ProductDetail() {
   if (error || !product) return <div className="max-w-7xl mx-auto px-6 py-20"><h2 className="text-4xl font-bold text-red-500">ERROR: {error}</h2><Link to="/shop" className="underline mt-4 block">Return to Shop</Link></div>;
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12 lg:py-24 animate-fade-in">
+    <AnimatedPage className="max-w-7xl mx-auto px-6 py-12 lg:py-24">
       <div className="grid md:grid-cols-2 gap-12 lg:gap-24">
         {/* Images */}
         <div className="space-y-4">
-          <div className="aspect-[3/4] bg-muted/20 overflow-hidden w-full border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(17,17,17,1)]">
-            <img src={mainImage || product.image} alt={product.name} className="w-full h-full object-cover" />
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="aspect-[3/4] bg-muted/20 overflow-hidden w-full border-4 border-foreground shadow-[8px_8px_0px_0px_rgba(17,17,17,1)]"
+          >
+            <motion.img 
+              key={mainImage}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+              src={mainImage || product.image} 
+              alt={product.name} 
+              className="w-full h-full object-cover" 
+            />
+          </motion.div>
           
           {/* Thumbnails */}
           {product.images && product.images.length > 0 && (
             <div className="grid grid-cols-4 gap-4 mt-4">
               {/* Primary Image Thumbnail */}
-              <div 
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 className={`aspect-[3/4] bg-muted/20 cursor-pointer overflow-hidden border-2 transition-all ${mainImage === product.image ? 'border-primary' : 'border-foreground hover:opacity-80'}`}
                 onClick={() => setMainImage(product.image)}
               >
                  <img src={product.image} alt="Thumbnail Primary" className="w-full h-full object-cover" />
-              </div>
+              </motion.div>
               
               {/* Additional Images Thumbnails */}
               {product.images.map((img, idx) => (
-                <div 
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   key={idx} 
                   className={`aspect-[3/4] bg-muted/20 cursor-pointer overflow-hidden border-2 transition-all ${mainImage === img ? 'border-primary' : 'border-foreground hover:opacity-80'}`}
                   onClick={() => setMainImage(img)}
                 >
                    <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
-                </div>
+                </motion.div>
               ))}
             </div>
           )}
@@ -200,7 +219,9 @@ export function ProductDetail() {
             </div>
             <div className="grid grid-cols-5 gap-3">
               {product.sizes.map(s => (
-                <button 
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   key={s}
                   onClick={() => setSelectedSize(s)}
                   className={`py-3 border font-sans text-sm tracking-widest uppercase transition-colors ${
@@ -210,25 +231,29 @@ export function ProductDetail() {
                   }`}
                 >
                   {s}
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
 
           <div className="flex gap-4">
-            <button 
+            <motion.button 
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={handleAddToCart}
               className="flex-grow bg-foreground text-background font-sans text-xs tracking-widest uppercase py-4 hover:bg-primary transition-colors"
             >
               Add to Bag
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={handleToggleWishlist}
               className={`px-6 border transition-colors flex items-center justify-center ${inWishlist ? 'border-primary text-primary bg-primary/5' : 'border-foreground/20 text-foreground hover:border-foreground'}`}
               title="Toggle Wishlist"
             >
               <Heart className={`w-5 h-5 ${inWishlist ? 'fill-current' : ''}`} />
-            </button>
+            </motion.button>
           </div>
           
           <div className="mt-12 grid grid-cols-2 gap-4 border-t border-foreground/10 pt-8 font-sans text-xs tracking-widest uppercase text-foreground/60">
@@ -349,6 +374,6 @@ export function ProductDetail() {
 
         </div>
       </div>
-    </div>
+    </AnimatedPage>
   );
 }
