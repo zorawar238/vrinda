@@ -13,52 +13,20 @@ export function CategoryGrid() {
             </h1>
           </div>
 
-          <div className="max-w-[1200px] w-full h-[800px] relative z-10 mx-auto">
+          <div className="max-w-[1200px] w-full md:h-[800px] relative z-10 mx-auto flex flex-col md:block items-center justify-center gap-16 pt-32 pb-20 md:py-0 px-4 md:px-0">
         
         {/* Center Main Image */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[75%] z-10 flex items-end">
+        <div className="relative md:absolute md:bottom-0 md:left-1/2 md:-translate-x-1/2 h-[50vh] md:h-[75%] z-10 flex items-end order-1 md:order-none">
           <img 
             src="/featured/image1.png" 
             alt="Main Feature" 
-            className="h-full w-auto object-cover drop-shadow-[0_30px_30px_rgba(0,0,0,0.3)] filter contrast-110 saturate-125" 
+            className="h-full w-auto object-cover drop-shadow-[0_30px_30px_rgba(0,0,0,0.3)] filter contrast-110 saturate-125 mx-auto" 
           />
         </div>
 
-        {/* Top Right: Blue Selection Box Image */}
-        <div className="absolute top-10 right-4 md:right-20 z-20">
-          <div className="relative border-[1.5px] border-secondary p-0.5 bg-white shadow-xl w-48 md:w-56">
-            {/* Transform Nodes */}
-            <div className="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary"></div>
-            <div className="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary"></div>
-            <div className="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary"></div>
-            <div className="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary"></div>
-            <img src="/featured/image3.png" alt="Detail Back" className="w-full h-auto object-cover" />
-          </div>
-        </div>
-
-        {/* Left Middle: MacOS Alert Box */}
-        <div className="absolute top-[40%] left-4 md:left-24 z-30">
-          <div className="bg-[#fcfcfc]/90 backdrop-blur-md rounded-md shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] overflow-hidden w-[280px] border border-gray-300">
-            {/* Header */}
-            <div className="bg-gradient-to-b from-[#f0f0f0] to-[#e0e0e0] px-3 py-1.5 flex gap-2 items-center border-b border-gray-300">
-              <div className="w-3 h-3 rounded-full bg-[#ff5f56] shadow-sm border border-[#e0443e]"></div>
-              <div className="w-3 h-3 rounded-full bg-[#ffbd2e] shadow-sm border border-[#dea123]"></div>
-              <div className="w-3 h-3 rounded-full bg-[#27c93f] shadow-sm border border-[#1aab29]"></div>
-            </div>
-            {/* Content */}
-            <div className="p-4 flex gap-3 items-start bg-white/50">
-              <div className="bg-[#ff3b30] text-white rounded-full w-5 h-5 flex items-center justify-center font-bold flex-shrink-0 mt-1 shadow-sm text-xs">!</div>
-              <div>
-                <p className="text-[#ff3b30] font-bold text-[10px] uppercase tracking-wider mb-0.5">note!</p>
-                <p className="text-xs text-gray-800 leading-snug font-medium">only for baddies!!!!!!</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Center/Right Bottom: Info Card */}
-        <div className="absolute bottom-12 right-4 md:right-[15%] z-30">
-          <div className="bg-[#fcfcfc] p-6 rounded-3xl shadow-2xl w-[320px] relative overflow-hidden border border-gray-100">
+        <div className="relative md:absolute md:bottom-12 md:right-[15%] z-30 order-2 md:order-none">
+          <div className="bg-[#fcfcfc] p-6 rounded-3xl shadow-2xl w-full max-w-[320px] md:w-[320px] mx-auto relative overflow-hidden border border-gray-100">
             <h2 className="text-secondary font-serif text-[2.5rem] leading-none mb-1">
               Order Now! <span className="text-[0.6rem] text-gray-500 font-sans tracking-normal align-top inline-block -ml-1 mt-1 font-bold">2026</span>
             </h2>
@@ -93,14 +61,46 @@ export function CategoryGrid() {
           </div>
         </div>
 
+        {/* Left Middle: MacOS Alert Box */}
+        <div className="relative md:absolute md:top-[40%] md:left-24 z-30 order-3 md:order-none w-full max-w-[280px] md:w-auto">
+          <div className="bg-[#fcfcfc]/90 backdrop-blur-md rounded-md shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] overflow-hidden w-full md:w-[280px] mx-auto border border-gray-300">
+            {/* Header */}
+            <div className="bg-gradient-to-b from-[#f0f0f0] to-[#e0e0e0] px-3 py-1.5 flex gap-2 items-center border-b border-gray-300">
+              <div className="w-3 h-3 rounded-full bg-[#ff5f56] shadow-sm border border-[#e0443e]"></div>
+              <div className="w-3 h-3 rounded-full bg-[#ffbd2e] shadow-sm border border-[#dea123]"></div>
+              <div className="w-3 h-3 rounded-full bg-[#27c93f] shadow-sm border border-[#1aab29]"></div>
+            </div>
+            {/* Content */}
+            <div className="p-4 flex gap-3 items-start bg-white/50">
+              <div className="bg-[#ff3b30] text-white rounded-full w-5 h-5 flex items-center justify-center font-bold flex-shrink-0 mt-1 shadow-sm text-xs">!</div>
+              <div>
+                <p className="text-[#ff3b30] font-bold text-[10px] uppercase tracking-wider mb-0.5">note!</p>
+                <p className="text-xs text-gray-800 leading-snug font-medium">only for baddies!!!!!!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Top Right: Blue Selection Box Image */}
+        <div className="relative md:absolute md:top-10 md:right-20 z-20 order-4 md:order-none">
+          <div className="relative border-[1.5px] border-secondary p-0.5 bg-white shadow-xl w-48 md:w-56 mx-auto">
+            {/* Transform Nodes */}
+            <div className="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
+            <div className="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
+            <div className="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
+            <div className="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
+            <img src="/featured/image3.png" alt="Detail Back" className="w-full h-auto object-cover" />
+          </div>
+        </div>
+
         {/* Bottom Left: Another Blue Selection Box Image */}
-        <div className="absolute bottom-16 left-4 md:left-24 z-20">
-           <div className="relative border-[1.5px] border-secondary p-1 bg-white shadow-xl w-56 flex gap-1 justify-between">
+        <div className="relative md:absolute md:bottom-16 md:left-24 z-20 order-5 md:order-none">
+           <div className="relative border-[1.5px] border-secondary p-1 bg-white shadow-xl w-56 mx-auto flex gap-1 justify-between">
              {/* Transform Nodes */}
-             <div className="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary"></div>
-             <div className="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary"></div>
-             <div className="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary"></div>
-             <div className="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary"></div>
+             <div className="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
+             <div className="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
+             <div className="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
+             <div className="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 bg-white border-[1.5px] border-secondary hidden md:block"></div>
              
              <img src="/featured/image2.png" alt="Detail Front" className="w-[49%] h-28 object-cover object-top" />
              <img src="/featured/image3.png" alt="Detail Back" className="w-[49%] h-28 object-cover object-center" />
@@ -110,7 +110,7 @@ export function CategoryGrid() {
           </div>
           
           {/* Bottom Left Signature */}
-          <div className="absolute bottom-4 left-6 z-20">
+          <div className="hidden md:block absolute bottom-4 left-6 z-20">
             <p className="text-secondary font-sans text-[10px] tracking-wide leading-snug">Design by<br/>Vrinda</p>
           </div>
 
