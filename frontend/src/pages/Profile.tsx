@@ -221,8 +221,8 @@ export function Profile() {
               </Link>
             </div>
           ) : (
-            <div className="overflow-x-auto border border-foreground/10 bg-background/50">
-              <table className="w-full text-left font-sans text-sm">
+            <div className="overflow-x-auto border border-foreground/10 bg-background/50 w-full">
+              <table className="w-full text-left font-sans text-sm min-w-[600px]">
                 <thead className="bg-foreground/5 border-b border-foreground/10">
                   <tr>
                     <th className="p-4 font-normal tracking-widest uppercase text-xs text-foreground/50">Order</th>

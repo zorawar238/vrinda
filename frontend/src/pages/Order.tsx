@@ -232,13 +232,13 @@ const Order = () => {
             <h2 className="text-sm font-sans tracking-widest uppercase text-foreground/50 mb-6 border-b border-foreground/10 pb-2">Order Items</h2>
             <ul className="space-y-6">
               {order.orderItems.map((item, index) => (
-                <li key={index} className="flex items-center space-x-6 border-b border-foreground/10 pb-6 last:border-0 last:pb-0">
-                  <img src={item.image} alt={item.name} className="w-20 h-28 object-cover bg-muted/20" />
-                  <div className="flex-1">
-                    <Link to={`/product/${item.product}`} className="font-sans text-sm tracking-wide hover:text-primary transition-colors block mb-1">
+                <li key={index} className="flex flex-row items-center space-x-4 md:space-x-6 border-b border-foreground/10 pb-6 last:border-0 last:pb-0">
+                  <img src={item.image} alt={item.name} className="w-16 h-24 md:w-20 md:h-28 object-cover bg-muted/20 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <Link to={`/product/${item.product}`} className="font-sans text-xs md:text-sm tracking-wide hover:text-primary transition-colors block mb-1 truncate">
                       {item.name}
                     </Link>
-                    <div className="text-xs font-sans tracking-widest uppercase text-foreground/50">Size: {item.size}</div>
+                    <div className="text-[10px] md:text-xs font-sans tracking-widest uppercase text-foreground/50">Size: {item.size}</div>
                   </div>
                   <div className="text-sm font-sans tracking-wide text-right">
                     <span className="text-foreground/50 mr-2">{item.qty} x ₹{item.price}</span>
