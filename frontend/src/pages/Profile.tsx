@@ -221,44 +221,94 @@ export function Profile() {
               </Link>
             </div>
           ) : (
-            <div className="overflow-x-auto border border-foreground/10 bg-background/50 w-full">
-              <table className="w-full text-left font-sans text-sm min-w-[600px]">
-                <thead className="bg-foreground/5 border-b border-foreground/10">
-                  <tr>
-                    <th className="p-4 font-normal tracking-widest uppercase text-xs text-foreground/50">Order</th>
-                    <th className="p-4 font-normal tracking-widest uppercase text-xs text-foreground/50">Date</th>
-                    <th className="p-4 font-normal tracking-widest uppercase text-xs text-foreground/50">Total</th>
-                    <th className="p-4 font-normal tracking-widest uppercase text-xs text-foreground/50">Paid</th>
-                    <th className="p-4 font-normal tracking-widest uppercase text-xs text-foreground/50">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {orders.map((order) => (
-                    <tr key={order._id} className="border-b border-foreground/5 hover:bg-foreground/5 transition-colors">
-                      <td className="p-4">
-                        <Link to={`/order/${order._id}`} className="hover:text-primary transition-colors underline underline-offset-4">
+          ) : (
+            <>
+              {/* Mobile Card Layout */}
+              <div className="md:hidden space-y-4 w-full">
+                {orders.map((order) => (
+                  <div key={order._id} className="border border-foreground/10 bg-background/50 p-6 flex flex-col gap-4">
+                    <div className="flex justify-between items-start border-b border-foreground/10 pb-4">
+                      <div>
+                        <span className="block text-[10px] font-sans tracking-widest uppercase text-foreground/50 mb-1">Order ID</span>
+                        <Link to={`/order/${order._id}`} className="hover:text-primary transition-colors underline underline-offset-4 text-sm font-sans tracking-wide">
                           #{order._id.substring(order._id.length - 6)}
                         </Link>
-                      </td>
-                      <td className="p-4 text-foreground/80">{new Date(order.createdAt).toLocaleDateString()}</td>
-                      <td className="p-4 text-foreground/80">₹{order.totalPrice.toFixed(2)}</td>
-                      <td className="p-4">
+                      </div>
+                      <div className="text-right">
+                        <span className="block text-[10px] font-sans tracking-widest uppercase text-foreground/50 mb-1">Date</span>
+                        <span className="text-sm font-sans tracking-wide text-foreground/80">{new Date(order.createdAt).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center pb-4 border-b border-foreground/10">
+                      <div>
+                        <span className="block text-[10px] font-sans tracking-widest uppercase text-foreground/50 mb-1">Total</span>
+                        <span className="text-sm font-sans tracking-wide text-foreground/80 font-bold">₹{order.totalPrice.toFixed(2)}</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="block text-[10px] font-sans tracking-widest uppercase text-foreground/50 mb-1">Payment</span>
                         {order.isPaid ? (
-                          <span className="text-foreground/80">{new Date(order.paidAt).toLocaleDateString()}</span>
+                          <span className="text-xs font-sans tracking-wide text-primary">Paid</span>
                         ) : (
-                          <span className="text-foreground/30">Pending</span>
+                          <span className="text-xs font-sans tracking-wide text-foreground/50">Pending</span>
                         )}
-                      </td>
-                      <td className="p-4">
-                        <span className={`tracking-wide ${order.status === 'Delivered' ? 'text-primary' : 'text-foreground/60'}`}>
-                          {order.status || 'Processing'}
-                        </span>
-                      </td>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between items-center pt-2">
+                      <span className="text-[10px] font-sans tracking-widest uppercase text-foreground/50">Status</span>
+                      <span className={`text-xs font-sans tracking-wide uppercase px-3 py-1 border ${order.status === 'Delivered' ? 'border-primary text-primary bg-primary/5' : 'border-foreground/20 text-foreground/70'}`}>
+                        {order.status || 'Processing'}
+                      </span>
+                    </div>
+                    
+                    <Link to={`/order/${order._id}`} className="mt-2 w-full bg-foreground text-background font-sans text-xs tracking-widest uppercase py-3 text-center hover:bg-primary transition-colors">
+                      View Details
+                    </Link>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop Table Layout */}
+              <div className="hidden md:block overflow-x-auto border border-foreground/10 bg-background/50 w-full">
+                <table className="w-full text-left font-sans text-sm min-w-[600px]">
+                  <thead className="bg-foreground/5 border-b border-foreground/10">
+                    <tr>
+                      <th className="p-4 font-normal tracking-widest uppercase text-xs text-foreground/50">Order</th>
+                      <th className="p-4 font-normal tracking-widest uppercase text-xs text-foreground/50">Date</th>
+                      <th className="p-4 font-normal tracking-widest uppercase text-xs text-foreground/50">Total</th>
+                      <th className="p-4 font-normal tracking-widest uppercase text-xs text-foreground/50">Paid</th>
+                      <th className="p-4 font-normal tracking-widest uppercase text-xs text-foreground/50">Status</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {orders.map((order) => (
+                      <tr key={order._id} className="border-b border-foreground/5 hover:bg-foreground/5 transition-colors">
+                        <td className="p-4">
+                          <Link to={`/order/${order._id}`} className="hover:text-primary transition-colors underline underline-offset-4">
+                            #{order._id.substring(order._id.length - 6)}
+                          </Link>
+                        </td>
+                        <td className="p-4 text-foreground/80">{new Date(order.createdAt).toLocaleDateString()}</td>
+                        <td className="p-4 text-foreground/80">₹{order.totalPrice.toFixed(2)}</td>
+                        <td className="p-4">
+                          {order.isPaid ? (
+                            <span className="text-foreground/80">{new Date(order.paidAt).toLocaleDateString()}</span>
+                          ) : (
+                            <span className="text-foreground/30">Pending</span>
+                          )}
+                        </td>
+                        <td className="p-4">
+                          <span className={`tracking-wide ${order.status === 'Delivered' ? 'text-primary' : 'text-foreground/60'}`}>
+                            {order.status || 'Processing'}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
         </div>
       </div>
