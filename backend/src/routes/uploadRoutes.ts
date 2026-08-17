@@ -1,47 +1,41 @@
-import path from 'path';
 import express, { type Request, type Response } from 'express';
 import multer from 'multer';
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import { protect, admin } from '../middleware/authMiddleware.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename(req, file, cb) {
-    cb(
-      null,
-      `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
-    );
-  },
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-function checkFileType(file: Express.Multer.File, cb: multer.FileFilterCallback) {
-  const filetypes = /jpg|jpeg|png|webp/;
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
-
-  if (extname && mimetype) {
-    return cb(null, true);
-  } else {
-    cb(new Error('Images only!'));
-  }
-}
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    return {
+      folder: 'vrinda_products',
+      allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
+      format: 'webp', // Force format to webp for massive speed gains
+      public_id: `${file.fieldname}-${Date.now()}`,
+    };
+  },
+});
 
 const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
-  fileFilter: function (req, file, cb) {
-    checkFileType(file, cb);
-  },
 });
 
 router.post('/', protect, admin, upload.single('image'), (req: Request, res: Response) => {
   if (req.file) {
     res.send({
       message: 'Image Uploaded',
-      image: `/${req.file.path.replace(/\\/g, '/')}`,
+      image: req.file.path, // Cloudinary URL
     });
   } else {
     res.status(400).send({ message: 'No image provided' });
@@ -50,7 +44,7 @@ router.post('/', protect, admin, upload.single('image'), (req: Request, res: Res
 
 router.post('/multiple', protect, admin, upload.array('images', 10), (req: Request, res: Response) => {
   if (req.files && Array.isArray(req.files) && req.files.length > 0) {
-    const images = req.files.map((file) => `/${file.path.replace(/\\/g, '/')}`);
+    const images = req.files.map((file: any) => file.path);
     res.send({
       message: 'Images Uploaded',
       images,
