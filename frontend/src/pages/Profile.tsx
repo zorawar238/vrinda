@@ -221,7 +221,6 @@ export function Profile() {
               </Link>
             </div>
           ) : (
-          ) : (
             <>
               {/* Mobile Card Layout */}
               <div className="md:hidden space-y-4 w-full">
