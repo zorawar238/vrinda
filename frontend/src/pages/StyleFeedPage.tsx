@@ -343,6 +343,12 @@ export const StyleFeedPage = () => {
 
             {/* Active Reel */}
             <div className="w-full h-full relative overflow-hidden bg-black">
+               {/* Preload adjacent videos for instant playback */}
+               <div className="hidden">
+                 {hasNext && <video preload="auto" src={reels[currentIndex + 1].videoUrl} />}
+                 {hasPrev && <video preload="auto" src={reels[currentIndex - 1].videoUrl} />}
+               </div>
+
                <AnimatePresence initial={false} custom={direction}>
                  <motion.div
                    key={reels[currentIndex]._id}
@@ -351,7 +357,7 @@ export const StyleFeedPage = () => {
                    initial="enter"
                    animate="center"
                    exit="exit"
-                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                   transition={{ type: "tween", duration: 0.25, ease: "easeOut" }}
                    className="absolute inset-0 w-full h-full"
                  >
                    <StylePost 
