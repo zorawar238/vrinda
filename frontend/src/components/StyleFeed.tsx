@@ -17,7 +17,7 @@ interface Reel {
   product: Product;
 }
 
-const StyleFeedItem = ({ reel, isActive, isMuted, toggleMute, isMobile }: { reel: Reel, isActive: boolean, isMuted: boolean, toggleMute: () => void, isMobile: boolean }) => {
+const StyleFeedItem = ({ reel, isActive, isMuted, toggleMute }: { reel: Reel, isActive: boolean, isMuted: boolean, toggleMute: () => void }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -203,7 +203,6 @@ export const StyleFeed = () => {
                 isActive={index === activeReelIndex} 
                 isMuted={isMuted} 
                 toggleMute={toggleMute}
-                isMobile={true}
               />
             </div>
           ))}
@@ -278,7 +277,6 @@ export const StyleFeed = () => {
               isActive={true} 
               isMuted={isMuted} 
               toggleMute={toggleMute}
-              isMobile={false}
             />
           </div>
 
