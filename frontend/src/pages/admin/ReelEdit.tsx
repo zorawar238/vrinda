@@ -189,9 +189,8 @@ export const ReelEdit = () => {
             value={productId}
             onChange={(e) => setProductId(e.target.value)}
             className="w-full border border-foreground/20 p-3 text-sm focus:outline-none focus:border-primary"
-            required
           >
-            <option value="">Select a Product</option>
+            <option value="">No Product Attached</option>
             {products.map((p) => (
               <option key={p._id} value={p._id}>
                 {p.name}
@@ -223,7 +222,7 @@ export const ReelEdit = () => {
 
         <button
           type="submit"
-          disabled={loading || uploading || !videoUrl || !productId}
+          disabled={loading || uploading || !videoUrl}
           className="w-full bg-foreground text-background py-4 uppercase tracking-widest text-xs font-bold hover:bg-primary transition-colors disabled:opacity-50"
         >
           {loading ? 'Saving...' : 'Save Reel'}

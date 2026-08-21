@@ -5,11 +5,18 @@ import { Reel } from '../models/Reel.js';
 // @route   GET /api/reels
 // @access  Public
 export const getReels = async (req: Request, res: Response) => {
+  const pageSize = Number(req.query.limit) || 10;
+  const page = Number(req.query.page) || 1;
+
   try {
+    const count = await Reel.countDocuments({ isPublished: true });
     const reels = await Reel.find({ isPublished: true })
       .populate('product', 'name price image images isTrending')
-      .sort({ createdAt: -1 });
-    res.json(reels);
+      .sort({ createdAt: -1 })
+      .limit(pageSize)
+      .skip(pageSize * (page - 1));
+      
+    res.json({ reels, page, pages: Math.ceil(count / pageSize) });
   } catch (error: any) {
     res.status(500).json({ message: error.message || 'Server Error' });
   }
@@ -56,7 +63,7 @@ export const createReel = async (req: Request, res: Response) => {
       videoUrl,
       thumbnailUrl,
       caption,
-      product,
+      product: product || undefined,
       isPublished: isPublished || false,
     });
 
@@ -79,8 +86,8 @@ export const updateReel = async (req: Request, res: Response) => {
     if (reel) {
       reel.videoUrl = videoUrl || reel.videoUrl;
       reel.thumbnailUrl = thumbnailUrl || reel.thumbnailUrl;
-      reel.caption = caption || reel.caption;
-      reel.product = product || reel.product;
+      reel.caption = caption !== undefined ? caption : reel.caption;
+      reel.product = product !== undefined ? (product === '' ? undefined : product) : reel.product;
       reel.isPublished = isPublished !== undefined ? isPublished : reel.isPublished;
 
       const updatedReel = await reel.save();

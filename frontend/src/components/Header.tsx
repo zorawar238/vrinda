@@ -48,7 +48,7 @@ export function Header() {
           <Link to="/shop" className="hover:text-primary transition-colors uppercase">Shop</Link>
           <Link to="/collections" className="hover:text-primary transition-colors uppercase">Collections</Link>
           <Link to="/about" className="hover:text-primary transition-colors uppercase">About</Link>
-          <a href="/#style-feed" className="hover:text-primary transition-colors uppercase">Style Feed</a>
+          <Link to="/style-feed" className="hover:text-primary transition-colors uppercase">Style Feed</Link>
           
           {userInfo?.isAdmin && (
             <div className="relative group">
@@ -172,7 +172,7 @@ export function Header() {
             <Link to="/shop" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Shop</Link>
             <Link to="/collections" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Collections</Link>
             <Link to="/about" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">About</Link>
-            <a href="/#style-feed" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Style Feed</a>
+            <Link to="/style-feed" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Style Feed</Link>
             
             <div className="border-t border-foreground/10 my-1"></div>
             

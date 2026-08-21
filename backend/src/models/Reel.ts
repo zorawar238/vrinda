@@ -4,8 +4,11 @@ export interface IReel extends Document {
   videoUrl: string;
   thumbnailUrl: string;
   caption: string;
-  product: mongoose.Types.ObjectId;
+  product?: mongoose.Types.ObjectId;
   isPublished: boolean;
+  likes: number;
+  comments: number;
+  shares: number;
 }
 
 const reelSchema = new Schema<IReel>(
@@ -23,12 +26,24 @@ const reelSchema = new Schema<IReel>(
     },
     product: {
       type: Schema.Types.ObjectId,
-      required: true,
+      required: false,
       ref: 'Product',
     },
     isPublished: {
       type: Boolean,
       default: false,
+    },
+    likes: {
+      type: Number,
+      default: 0,
+    },
+    comments: {
+      type: Number,
+      default: 0,
+    },
+    shares: {
+      type: Number,
+      default: 0,
     },
   },
   {

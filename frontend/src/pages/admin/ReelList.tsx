@@ -9,7 +9,7 @@ interface Reel {
   thumbnailUrl: string;
   caption: string;
   isPublished: boolean;
-  product: {
+  product?: {
     _id: string;
     name: string;
   };

@@ -27,6 +27,7 @@ import { FAQ } from './pages/FAQ';
 import { ShippingReturns } from './pages/ShippingReturns';
 import { ContactUs } from './pages/ContactUs';
 import { TrackOrder } from './pages/TrackOrder';
+import { StyleFeedPage } from './pages/StyleFeedPage';
 import { WishlistProvider } from './context/WishlistContext';
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
             <Route path="shop" element={<Shop />} />
             <Route path="collections" element={<Collections />} />
             <Route path="about" element={<About />} />
+            <Route path="style-feed/:reelId?" element={<StyleFeedPage />} />
             <Route path="product/:id" element={<ProductDetail />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
