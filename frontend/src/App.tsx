@@ -32,7 +32,7 @@ import { WishlistProvider } from './context/WishlistContext';
 
 function App() {
   const location = useLocation();
-  
+
   return (
     <WishlistProvider>
       <AnimatePresence mode="wait">
@@ -58,7 +58,7 @@ function App() {
             <Route path="shipping-returns" element={<ShippingReturns />} />
             <Route path="contact" element={<ContactUs />} />
             <Route path="track-order" element={<TrackOrder />} />
-            
+
             {/* Admin Routes */}
             <Route path="admin/dashboard" element={<AdminDashboard />} />
             <Route path="admin/productlist" element={<ProductList />} />
