@@ -25,7 +25,7 @@ export function BrandStory() {
         </div>
 
         {/* Text Layout */}
-        <div className="relative z-20 flex flex-col md:flex-row justify-between h-full pt-10 pb-64 md:py-10">
+        <div className="relative z-20 flex flex-col md:flex-row justify-between h-full pt-10 pb-[340px] md:py-10">
           
           {/* Left Text Block */}
           <div className="w-full md:w-1/3 space-y-4 mb-8 md:mb-0">
