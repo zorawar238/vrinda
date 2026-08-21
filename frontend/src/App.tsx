@@ -21,6 +21,8 @@ import { ProductEdit } from './pages/admin/ProductEdit';
 import { UserList } from './pages/admin/UserList';
 import OrderList from './pages/admin/OrderList';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import { ReelList } from './pages/admin/ReelList';
+import { ReelEdit } from './pages/admin/ReelEdit';
 import { FAQ } from './pages/FAQ';
 import { ShippingReturns } from './pages/ShippingReturns';
 import { ContactUs } from './pages/ContactUs';
@@ -61,6 +63,8 @@ function App() {
             <Route path="admin/product/:id/edit" element={<ProductEdit />} />
             <Route path="admin/userlist" element={<UserList />} />
             <Route path="admin/orderlist" element={<OrderList />} />
+            <Route path="admin/reels" element={<ReelList />} />
+            <Route path="admin/reel/:id/edit" element={<ReelEdit />} />
           </Route>
         </Routes>
       </AnimatePresence>

@@ -54,4 +54,33 @@ router.post('/multiple', protect, admin, upload.array('images', 10), (req: Reque
   }
 });
 
+// Video upload config
+const videoStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    return {
+      folder: 'vrinda_reels',
+      resource_type: 'video',
+      allowed_formats: ['mp4', 'mov', 'webm'],
+      public_id: `${file.fieldname}-${Date.now()}`,
+    };
+  },
+});
+
+const uploadVideo = multer({
+  storage: videoStorage,
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB limit for video
+});
+
+router.post('/video', protect, admin, uploadVideo.single('video'), (req: Request, res: Response) => {
+  if (req.file) {
+    res.send({
+      message: 'Video Uploaded',
+      video: req.file.path, // Cloudinary URL
+    });
+  } else {
+    res.status(400).send({ message: 'No video provided' });
+  }
+});
+
 export default router;

@@ -48,6 +48,7 @@ export function Header() {
           <Link to="/shop" className="hover:text-primary transition-colors uppercase">Shop</Link>
           <Link to="/collections" className="hover:text-primary transition-colors uppercase">Collections</Link>
           <Link to="/about" className="hover:text-primary transition-colors uppercase">About</Link>
+          <a href="/#style-feed" className="hover:text-primary transition-colors uppercase">Style Feed</a>
           
           {userInfo?.isAdmin && (
             <div className="relative group">
@@ -60,6 +61,7 @@ export function Header() {
                 <Link to="/admin/productlist" className="px-5 py-3 hover:bg-muted/30 uppercase text-xs tracking-widest">Products</Link>
                 <Link to="/admin/orderlist" className="px-5 py-3 hover:bg-muted/30 uppercase text-xs tracking-widest">Orders</Link>
                 <Link to="/admin/userlist" className="px-5 py-3 hover:bg-muted/30 uppercase text-xs tracking-widest">Users</Link>
+                <Link to="/admin/reels" className="px-5 py-3 hover:bg-muted/30 uppercase text-xs tracking-widest">Reels</Link>
               </div>
             </div>
           )}
@@ -170,6 +172,7 @@ export function Header() {
             <Link to="/shop" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Shop</Link>
             <Link to="/collections" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Collections</Link>
             <Link to="/about" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">About</Link>
+            <a href="/#style-feed" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Style Feed</a>
             
             <div className="border-t border-foreground/10 my-1"></div>
             
@@ -191,6 +194,7 @@ export function Header() {
                 <Link to="/admin/productlist" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Products</Link>
                 <Link to="/admin/orderlist" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Orders</Link>
                 <Link to="/admin/userlist" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Users</Link>
+                <Link to="/admin/reels" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Reels</Link>
               </>
             )}
           </nav>

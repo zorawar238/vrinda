@@ -4,6 +4,7 @@ import { CategoryGrid } from '../components/CategoryGrid';
 import { TrendingSection } from '../components/TrendingSection';
 import { BrandStory } from '../components/BrandStory';
 import { AnimatedPage } from '../components/AnimatedPage';
+import { StyleFeed } from '../components/StyleFeed';
 
 export function Home() {
   return (
@@ -12,6 +13,7 @@ export function Home() {
       <TrendingSection />
       <CategoryGrid />
       <ProductGrid />
+      <StyleFeed />
       <BrandStory />
     </AnimatedPage>
   );
