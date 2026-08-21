@@ -13,6 +13,7 @@ export function Header() {
   
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -28,7 +29,10 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-foreground/10 transition-all duration-300">
       <div className="flex items-center justify-between px-6 py-5 max-w-7xl mx-auto w-full">
         {/* Mobile Menu */}
-        <button className="md:hidden p-2 text-foreground/70 hover:text-foreground transition-colors">
+        <button 
+          onClick={() => setIsSidebarOpen(true)}
+          className="md:hidden p-2 text-foreground/70 hover:text-foreground transition-colors"
+        >
           <Menu className="w-5 h-5" />
         </button>
 
@@ -119,6 +123,77 @@ export function Header() {
               </span>
             )}
           </button>
+        </div>
+      </div>
+
+      {/* Mobile Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* Mobile Sidebar */}
+      <div 
+        className={`fixed top-0 left-0 bottom-0 w-[85%] max-w-sm bg-background border-r border-foreground/10 z-50 transform transition-transform duration-300 ease-in-out md:hidden flex flex-col ${
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <div className="flex items-center justify-between p-6 border-b border-foreground/10">
+          <span className="text-2xl font-display italic tracking-widest mt-1">
+            Vrinda
+          </span>
+          <button 
+            onClick={() => setIsSidebarOpen(false)}
+            className="p-2 text-foreground/70 hover:text-foreground transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="p-6 flex flex-col gap-6 overflow-y-auto flex-1">
+          {/* Mobile Search */}
+          <form onSubmit={(e) => { handleSearch(e); setIsSidebarOpen(false); }} className="flex items-center border-b border-foreground/30 relative pb-2">
+            <Search className="w-4 h-4 text-foreground/50 mr-2" />
+            <input 
+              type="text" 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search..."
+              className="outline-none w-full bg-transparent text-sm tracking-wide"
+            />
+          </form>
+
+          {/* Navigation Links */}
+          <nav className="flex flex-col gap-5 text-sm font-medium tracking-widest text-foreground/80">
+            <Link to="/shop" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Shop</Link>
+            <Link to="/collections" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Collections</Link>
+            <Link to="/about" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">About</Link>
+            
+            <div className="border-t border-foreground/10 my-1"></div>
+            
+            <Link to={userInfo ? "/profile" : "/login"} onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase flex items-center gap-3">
+              <User className="w-4 h-4" />
+              {userInfo ? userInfo.name : 'Sign In'}
+            </Link>
+            
+            <Link to="/wishlist" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase flex items-center gap-3">
+              <Heart className="w-4 h-4" />
+              Wishlist ({wishlistItems.length})
+            </Link>
+
+            {userInfo?.isAdmin && (
+              <>
+                <div className="border-t border-foreground/10 my-1"></div>
+                <div className="uppercase text-xs tracking-widest text-foreground/50 mb-1">Admin</div>
+                <Link to="/admin/dashboard" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Dashboard</Link>
+                <Link to="/admin/productlist" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Products</Link>
+                <Link to="/admin/orderlist" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Orders</Link>
+                <Link to="/admin/userlist" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase">Users</Link>
+              </>
+            )}
+          </nav>
         </div>
       </div>
     </header>
