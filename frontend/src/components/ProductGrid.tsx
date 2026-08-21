@@ -35,7 +35,7 @@ export function ProductGrid() {
 
   return (
     <section className="py-24 px-6 max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-foreground/10 pb-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 border-b border-foreground/10 pb-6">
         <div>
           <h2 className="text-4xl md:text-5xl font-display tracking-tight text-foreground">
             New Arrivals
