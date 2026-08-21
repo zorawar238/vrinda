@@ -35,7 +35,7 @@ export function TrendingSection() {
 
   return (
     <section className="w-full bg-secondary py-6 px-4 md:px-8 border-y-2 border-foreground overflow-hidden">
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 min-h-[600px] md:min-h-[75vh]">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-4 md:min-h-[75vh]">
         
         {/* Left side: Products and Image Blocks */}
         <div className="md:col-span-9 flex flex-col gap-4">
@@ -49,16 +49,16 @@ export function TrendingSection() {
                <div className="col-span-full text-background font-sans">Loading...</div>
             ) : (
                trendingItems.map((item) => (
-                  <div key={item._id} className="bg-background border-2 border-foreground relative group flex flex-col h-64 md:h-full overflow-hidden">
+                  <div key={item._id} className="bg-background border-2 border-foreground relative group flex flex-col aspect-[4/5] md:aspect-auto md:h-full overflow-hidden">
                     <Link to={`/product/${item._id}`} className="absolute inset-0 z-10"></Link>
                     <div className="absolute top-4 left-4 font-display text-foreground text-sm uppercase tracking-widest z-20">
                       / {item.name.substring(0, 15)}...
                     </div>
-                    <div className="flex-1 p-8 mt-4 flex items-center justify-center">
+                    <div className="flex-1 p-4 pt-12 md:p-8 md:mt-4 flex items-center justify-center overflow-hidden">
                       <img 
                         src={item.image} 
                         alt={item.name} 
-                        className="max-h-full object-contain group-hover:scale-110 transition-transform duration-500" 
+                        className="w-full h-full object-cover md:w-auto md:h-auto md:max-h-full md:object-contain group-hover:scale-110 transition-transform duration-500" 
                       />
                     </div>
                     <div className="absolute bottom-4 right-4 z-20">
