@@ -55,7 +55,7 @@ export function ProductGrid() {
             <div key={p._id} className={`group flex flex-col ${index === 3 ? 'md:hidden' : ''}`}>
               <Link to={`/product/${p._id}`} className="relative aspect-[3/4] bg-muted/20 overflow-hidden mb-2 md:mb-4 block">
                 {p.isTrending && (
-                  <div className="absolute top-3 left-3 z-10 bg-primary/90 backdrop-blur-sm text-background text-[10px] tracking-widest uppercase px-2 py-1 rounded-full">
+                  <div className="absolute top-2 left-2 md:top-3 md:left-3 z-10 bg-primary/90 backdrop-blur-sm text-background text-[9px] md:text-[10px] tracking-widest uppercase px-1.5 py-0.5 md:px-2 md:py-1 rounded-full">
                     Trending
                   </div>
                 )}
@@ -70,13 +70,18 @@ export function ProductGrid() {
               </Link>
               <div className="flex flex-col justify-between flex-1">
                 <Link to={`/product/${p._id}`} className="hover:text-primary transition-colors">
-                  <h3 className="font-sans text-xs md:text-sm tracking-wide text-foreground mb-1">{p.name}</h3>
+                  <h3 className="font-sans text-[15px] md:text-sm tracking-wide text-foreground md:mb-1 leading-snug">{p.name}</h3>
                 </Link>
-                <div className="flex items-center justify-between mt-1">
-                  <p className="font-sans text-sm text-foreground/70">₹{p.price}</p>
-                  <div className="flex items-center gap-1">
+                <div className="flex flex-col items-start mt-1 md:flex-row md:items-center md:justify-between md:mt-1">
+                  <p className="font-sans text-[16px] font-semibold text-foreground md:text-sm md:font-normal md:text-foreground/70">₹{p.price}</p>
+                  <div className="flex items-center gap-1 mt-0.5 md:mt-0 opacity-80 md:opacity-100 [&_svg]:w-[13px] [&_svg]:h-[13px] md:[&_svg]:w-5 md:[&_svg]:h-5">
                     <Rating value={p.rating || 0} />
-                    <span className="text-xs text-foreground/40">({p.numReviews || 0})</span>
+                    <span className="text-[11px] opacity-50 md:text-xs md:opacity-100 text-foreground md:text-foreground/40">
+                      <span className="md:hidden">
+                        {p.numReviews === 0 ? 'No reviews' : `· ${p.numReviews}`}
+                      </span>
+                      <span className="hidden md:inline">({p.numReviews || 0})</span>
+                    </span>
                   </div>
                 </div>
               </div>
