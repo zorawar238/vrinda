@@ -10,9 +10,9 @@ export function CategoryGrid() {
       <div className="md:hidden flex flex-col items-center relative px-4 pt-8 pb-16">
 
         {/* Background Typography */}
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 w-[140%] flex justify-center pointer-events-none select-none z-0 overflow-hidden">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 w-full flex justify-center pointer-events-none select-none z-0">
           <h1
-            className="text-[7rem] sm:text-[9rem] text-[#3d3d3d]/90 leading-none whitespace-nowrap drop-shadow-sm"
+            className="text-[17vw] sm:text-[6rem] text-[#3d3d3d]/90 leading-none whitespace-nowrap drop-shadow-sm text-center"
             style={{ fontFamily: "'Badaboom BB', cursive" }}
           >
             Order Now
