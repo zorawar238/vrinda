@@ -50,7 +50,7 @@ const StyleFeedItem = ({ reel, isActive, isMuted, toggleMute, isMobile }: { reel
   };
 
   return (
-    <div className={`relative w-full ${isMobile ? 'h-full snap-start snap-always' : 'aspect-[9/16] bg-black'} bg-black overflow-hidden group`}>
+    <div className={`relative w-full h-full bg-black overflow-hidden group rounded-xl`}>
       <video
         ref={videoRef}
         src={reel.videoUrl}
@@ -58,43 +58,43 @@ const StyleFeedItem = ({ reel, isActive, isMuted, toggleMute, isMobile }: { reel
         loop
         muted={isMuted}
         playsInline
-        className="w-full h-full object-cover cursor-pointer"
+        className="w-full h-full object-contain cursor-pointer"
         onClick={togglePlay}
       />
       
       {/* Overlay UI */}
-      <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-6 pointer-events-none bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-100 transition-opacity duration-300">
+      <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-6 pointer-events-none bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-100 transition-opacity duration-300">
         
         {/* Top/Center Controls */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           {!isPlaying && (
             <div className="bg-black/50 p-4 rounded-full text-white backdrop-blur-sm pointer-events-auto cursor-pointer transition-transform hover:scale-110" onClick={togglePlay}>
-              <Play className="w-8 h-8 fill-current" />
+              <Play className="w-8 h-8 fill-current ml-1" />
             </div>
           )}
         </div>
 
         {/* Bottom Info */}
-        <div className="pointer-events-auto flex items-end justify-between w-full">
-          <div className="flex-1 pr-4 text-white">
-            <h3 className="font-display tracking-widest text-lg md:text-xl uppercase mb-1">{reel.product?.name}</h3>
-            <p className="font-sans font-bold text-base md:text-lg mb-3">₹{reel.product?.price}</p>
-            {reel.caption && (
-              <p className="font-sans text-xs md:text-sm text-white/80 line-clamp-2 mb-4">{reel.caption}</p>
-            )}
+        <div className="pointer-events-auto flex items-end justify-between w-full pb-2">
+          <div className="flex-1 pr-4 flex flex-col">
+            <div className="mb-4">
+              <h3 className="font-display tracking-widest text-xl uppercase text-white leading-tight drop-shadow-md">{reel.product?.name}</h3>
+              <p className="font-sans font-bold text-base text-white/90 drop-shadow-md mt-1">₹{reel.product?.price}</p>
+            </div>
             
             <Link 
               to={`/product/${reel.product?._id}`}
-              className="inline-block bg-white text-black font-sans font-bold text-xs uppercase tracking-widest px-6 py-3 hover:bg-primary hover:text-white transition-colors"
+              className="inline-flex justify-center items-center bg-white text-black font-sans font-bold text-xs uppercase tracking-widest px-6 py-4 hover:bg-primary hover:text-white transition-colors w-full max-w-[240px]"
             >
               Shop Now &rarr;
             </Link>
           </div>
           
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center justify-end mb-1">
             <button 
               onClick={handleMuteToggle}
-              className="p-2 bg-black/40 rounded-full text-white backdrop-blur-sm hover:bg-black/60 transition-colors"
+              className="p-3 bg-black/40 rounded-full text-white backdrop-blur-sm hover:bg-black/60 transition-colors border border-white/10"
+              aria-label={isMuted ? "Unmute video" : "Mute video"}
             >
               {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
             </button>
@@ -176,8 +176,8 @@ export const StyleFeed = () => {
   }
 
   return (
-    <section id="style-feed" className="py-12 md:py-24 w-full overflow-hidden">
-      <div className="px-6 max-w-7xl mx-auto mb-8 md:mb-16">
+    <section id="style-feed" className="py-8 md:py-24 w-full overflow-hidden">
+      <div className="px-6 max-w-7xl mx-auto mb-6 md:mb-16">
         <h2 className="text-4xl md:text-6xl font-display tracking-tight text-foreground uppercase mb-2">
           Style<span className="text-primary">//</span>Feed
         </h2>
@@ -190,13 +190,13 @@ export const StyleFeed = () => {
       <div className="md:hidden">
         <div 
           ref={containerRef}
-          className="w-full h-[80vh] md:h-screen overflow-y-scroll snap-y snap-mandatory bg-black scroll-smooth"
+          className="w-full h-[75dvh] overflow-y-scroll snap-y snap-mandatory bg-background scroll-smooth px-4"
         >
           {reels.map((reel, index) => (
             <div 
               key={reel._id} 
               ref={(el) => { itemRefs.current[index] = el; }}
-              className="w-full h-full"
+              className="w-full h-full snap-start snap-always pb-6"
             >
               <StyleFeedItem 
                 reel={reel} 

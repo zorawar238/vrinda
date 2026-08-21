@@ -7,7 +7,7 @@ import { useWishlist } from '../context/WishlistContext';
 
 export function Header() {
   const { openCart, cartItems } = useCart();
-  const { userInfo } = useAuth();
+  const { userInfo, logout } = useAuth();
   const { wishlistItems } = useWishlist();
   const itemCount = cartItems.reduce((total, item) => total + (item.qty || 1), 0); // Note: quantity in ProductDetail uses qty, previously quantity
   
@@ -154,7 +154,7 @@ export function Header() {
           </button>
         </div>
 
-        <div className="p-6 flex flex-col gap-6 overflow-y-auto flex-1">
+        <div className="p-6 flex flex-col gap-6 overflow-y-auto flex-1 pb-20">
           {/* Mobile Search */}
           <form onSubmit={(e) => { handleSearch(e); setIsSidebarOpen(false); }} className="flex items-center border-b border-foreground/30 relative pb-2">
             <Search className="w-4 h-4 text-foreground/50 mr-2" />
@@ -176,10 +176,28 @@ export function Header() {
             
             <div className="border-t border-foreground/10 my-1"></div>
             
-            <Link to={userInfo ? "/profile" : "/login"} onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase flex items-center gap-3">
-              <User className="w-4 h-4" />
-              {userInfo ? userInfo.name : 'Sign In'}
-            </Link>
+            {userInfo ? (
+              <>
+                <Link to="/profile" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase flex items-center gap-3">
+                  <User className="w-4 h-4" />
+                  Profile ({userInfo.name})
+                </Link>
+                <button 
+                  onClick={() => {
+                    logout();
+                    setIsSidebarOpen(false);
+                  }} 
+                  className="hover:text-primary transition-colors uppercase flex items-center gap-3 text-left"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link to="/login" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase flex items-center gap-3">
+                <User className="w-4 h-4" />
+                Login
+              </Link>
+            )}
             
             <Link to="/wishlist" onClick={() => setIsSidebarOpen(false)} className="hover:text-primary transition-colors uppercase flex items-center gap-3">
               <Heart className="w-4 h-4" />

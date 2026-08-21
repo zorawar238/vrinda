@@ -22,7 +22,7 @@ export function Hero() {
         transition={{ delay: 1 }}
         className="order-2 relative md:absolute z-30 md:top-24 md:right-12 w-[90%] max-w-[320px] md:w-48 text-center md:text-right text-sm md:text-xs text-foreground font-sans leading-tight tracking-wide pointer-events-auto mb-8 md:mb-0"
       >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.
+        For the girls who walk their own way. Sharp silhouettes, fearless energy, and effortless elegance—made to be seen, never to fit in.
       </motion.div>
 
       {/* Foreground image - Model */}
